@@ -2,7 +2,7 @@ package model;
 
 public class GameBoardCell {
     private Numbers val;
-    private final boolean canChange;
+    private boolean canChange;
 
     public GameBoardCell(Numbers val, boolean canChange) {
         this.val = val;
@@ -19,7 +19,11 @@ public class GameBoardCell {
         }
     }
 
-    public boolean isCanChange() {
+    public boolean canChange() {
         return canChange;
+    }
+
+    public boolean setCanChange(boolean canChange){
+        this.canChange = canChange;
     }
 }

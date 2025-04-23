@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.Gson;
+
 private static final int SIZE = 9;
 
 public class GameBoard {
@@ -19,12 +21,18 @@ public class GameBoard {
     }
 
     public boolean fillPlace(Numbers n, int row, int col) {
-        if (board[row][col].isCanChange() &&
+        if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {
-            board[row][col].setVal(n);
+            GameBoard c = this.copy();
+            c.board[row][col].setVal(n);
             return true;
         }
         return false;
+    }
+
+    public GameBoard copy() {
+        Gson gson = new Gson();
+        return gson.fromJson(gson.toJson(this), getClass());
     }
 
     private boolean isNumberInRow(Numbers n, int row) {
@@ -63,4 +71,29 @@ public class GameBoard {
         return !isNumberInBox(n, row, col) && !isNumberInRow(n, row) && !isNumberInCol(n, col);
     }
 
+    private boolean solve() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][j].getVal().equals(Numbers.Empty)) {
+                    for (int num = 1; num < Numbers.values().length; num++) {
+                        Numbers numEnum = Numbers.values()[num];
+                        if (isValidPlacement(numEnum, i, j)) {
+                            board[i][j].setVal(numEnum);
+
+                            if (this.solve()) {
+                                return true;
+                            }
+                            // if we were not able to solve the game with this placement, reset spot and try another number
+                            else {
+                                board[i][j].setVal(Numbers.Empty);
+                            }
+                        }
+                    }
+
+                    // we try to fill that spot with every number and all failed
+                    return false;
+                }
+            }
+        }
+    }
 }
