@@ -1,6 +1,5 @@
 import model.Difficulty;
 import model.GameBoard;
-import model.GameBoardCell;
 import model.Numbers;
 
 public class Main {
