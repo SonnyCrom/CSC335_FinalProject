@@ -75,6 +75,9 @@ public class GameBoard {
             if (!this.board[row][col].getVal().equals(Numbers.Empty)) {
                 Numbers originalVal = this.board[row][col].getVal();
                 this.board[row][col].setVal(Numbers.Empty);
+
+                // we want to make sure that there is only one unique solution to the board, so if there are more, we're
+                // adding back the original to the board and mark down a failed attempt
                 if (this.copy().countSolutions() != 1) {
                     this.board[row][col].setVal(originalVal);
                     attemts--;
