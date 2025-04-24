@@ -1,6 +1,8 @@
+package main;
 import model.Difficulty;
 import model.GameBoard;
 import model.Numbers;
+import view.StartScreen;
 
 public class Main {
 
@@ -18,6 +20,10 @@ public class Main {
 //                {Numbers.Nine, Numbers.Eight, Numbers.Two, Numbers.Five, Numbers.One, Numbers.Six, Numbers.Three, Numbers.Four, Numbers.Seven},
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
+    	
+		//StartScreen view = new StartScreen();
+    	
+    	
         for (int k = 0; k <100; k++) {
 
             GameBoard g = new GameBoard(Difficulty.HARD);
