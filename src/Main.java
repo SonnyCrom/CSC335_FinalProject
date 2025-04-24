@@ -18,17 +18,23 @@ public class Main {
 //                {Numbers.Nine, Numbers.Eight, Numbers.Two, Numbers.Five, Numbers.One, Numbers.Six, Numbers.Three, Numbers.Four, Numbers.Seven},
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
-        GameBoard g = new GameBoard(Difficulty.EASY);
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                Numbers val = g.getValueAt(i, j);
-                if (val == Numbers.Empty) {
-                    System.out.print("X ");
-                } else {
-                    System.out.print(val.ordinal() + 1 + " ");
+        for (int k = 0; k <100; k++) {
+
+            GameBoard g = new GameBoard(Difficulty.HARD);
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    Numbers val = g.getValueAt(i, j);
+                    if (val == Numbers.Empty) {
+                        System.out.print("X|");
+                    } else {
+                        System.out.print(val.ordinal() + 1 + "|");
+                    }
                 }
+                System.out.println();
+                System.out.println("------------------");
             }
-            System.out.println();
         }
+
     }
 }
+
