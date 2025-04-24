@@ -34,10 +34,22 @@ public class Model {
 		this.observers.remove(observer);
 	}
 	
+	public void startGame(Observer observer) {
+		
+	}
+	
+	public void exitGame() {
+		System.exit(0);
+	}
+	
 	/* PRIVATE METHODS */
 	private void notifyObservers() {
 		for(Observer o : observers) {
 			o.newNumber(this.number);
 		}
+	}
+
+
+	public void quitGame(Observer observer) {
 	}
 }

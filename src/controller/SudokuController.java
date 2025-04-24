@@ -46,6 +46,12 @@ public class SudokuController implements ActionListener {
 		if(command.equals("nine")) {
 			model.changeNum(9);
 		}
+		if(command.equals("start")) {
+			model.startGame(null);
+		}
+		if(command.equals("Quit")) {
+			System.exit(0);
+		}
 	}
 	
 	public void addObserver(Observer observer) {

@@ -1,11 +1,12 @@
 package main;
 
+import view.StartScreen;
 import view.SudokuGUI;
 
 public class Main {
 
 	public static void main(String[] args) {
-		SudokuGUI view = new SudokuGUI();
+		StartScreen view = new StartScreen();
 	}
 
 }
