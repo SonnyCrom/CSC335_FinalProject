@@ -7,15 +7,13 @@ import java.util.Random;
 
 public class GameBoard {
     private static final int SIZE = 9;
-    private static HashMap<Difficulty, Integer> DIFFICULTY_REMOVE = new HashMap<>() {{
+    private static final HashMap<Difficulty, Integer> DIFFICULTY_REMOVE = new HashMap<>() {{
         put(Difficulty.EASY, 30);
         put(Difficulty.HARD, 45);
     }};
-    private static final int EASY_REMOVE = 9;
-    private static final int HARD_REMOVE = 9;
 
-    private GameBoardCell[][] board;
-    private Difficulty difficulty;
+    private final GameBoardCell[][] board;
+    private final Difficulty difficulty;
 
     public GameBoard(Numbers[][] initialValues, Difficulty difficulty) {
         board = new GameBoardCell[SIZE][SIZE];
