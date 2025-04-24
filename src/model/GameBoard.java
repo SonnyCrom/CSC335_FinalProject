@@ -12,7 +12,7 @@ import java.util.*;
  * of how many solutions exist (countSolutions in this program).
  * */
 
-public class GameBoard {
+public class GameBoard{
     private static final int SIZE = 9;
     private static final HashMap<Difficulty, Integer> DIFFICULTY_ATTEMTS = new HashMap<>() {{
         put(Difficulty.EASY, 5);
@@ -277,7 +277,7 @@ public class GameBoard {
     public boolean gameOver() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-            	if(!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty));
+            	if(!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty))
             		return false;
             }
         }
