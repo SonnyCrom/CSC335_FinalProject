@@ -4,6 +4,13 @@ import com.google.gson.Gson;
 
 import java.util.*;
 
+/*
+ * The creation of the board is based on the python code from the following link:
+ * https://www.101computing.net/sudoku-generator-algorithm/
+ * The main different from the website, outside of converting python to Java, was changing solveGrid to return a number
+ * of how many solutions exist (countSolutions in this program).
+ * */
+
 public class GameBoard {
     private static final int SIZE = 9;
     private static final HashMap<Difficulty, Integer> DIFFICULTY_ATTEMTS = new HashMap<>() {{
