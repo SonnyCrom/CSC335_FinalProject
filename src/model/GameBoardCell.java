@@ -23,7 +23,7 @@ public class GameBoardCell {
         return canChange;
     }
 
-    public boolean setCanChange(boolean canChange){
+    public void setCanChange(boolean canChange){
         this.canChange = canChange;
     }
 }

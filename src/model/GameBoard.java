@@ -2,22 +2,34 @@ package model;
 
 import com.google.gson.Gson;
 
-private static final int SIZE = 9;
+import java.util.HashMap;
+import java.util.Random;
 
 public class GameBoard {
-    private GameBoardCell[][] board;
+    private static final int SIZE = 9;
+    private static HashMap<Difficulty, Integer> DIFFICULTY_REMOVE = new HashMap<>() {{
+        put(Difficulty.EASY, 30);
+        put(Difficulty.HARD, 45);
+    }};
+    private static final int EASY_REMOVE = 9;
+    private static final int HARD_REMOVE = 9;
 
-    public GameBoard(int[][] initialValues) {
+    private GameBoardCell[][] board;
+    private Difficulty difficulty;
+
+    public GameBoard(Numbers[][] initialValues, Difficulty difficulty) {
         board = new GameBoardCell[SIZE][SIZE];
+        this.difficulty = difficulty;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (initialValues[i][j] == 0) {
-                    board[i][j] = new GameBoardCell(Numbers.Empty, true);
-                } else {
-                    board[i][j] = new GameBoardCell(Numbers.values()[initialValues[i][j] - 1], true);
-                }
+                board[i][j] = new GameBoardCell(initialValues[i][j], true);
             }
         }
+        setBoardForPlay();
+    }
+
+    public Numbers getValueAt(int row, int col) {
+        return board[row][col].getVal();
     }
 
     public boolean fillPlace(Numbers n, int row, int col) {
@@ -33,6 +45,33 @@ public class GameBoard {
     public GameBoard copy() {
         Gson gson = new Gson();
         return gson.fromJson(gson.toJson(this), getClass());
+    }
+
+    private void setBoardForPlay() {
+        Random random = new Random();
+        for (int i = 0; i < DIFFICULTY_REMOVE.get(this.difficulty); i++) {
+            boolean isRemoved = false;
+            while (!isRemoved) {
+                int row = random.nextInt(SIZE);
+                int col = random.nextInt(SIZE);
+                Numbers originalVal = board[row][col].getVal();
+                if (!originalVal.equals(Numbers.Empty)) {
+                    board[row][col].setVal(Numbers.Empty);
+                    if (this.copy().solve()) {
+                        isRemoved = true;
+                    } else {
+                        board[row][col].setVal(originalVal);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][j].getVal().equals(Numbers.Empty)) {
+                    board[i][j].setCanChange(false);
+                }
+            }
+        }
     }
 
     private boolean isNumberInRow(Numbers n, int row) {
@@ -95,5 +134,7 @@ public class GameBoard {
                 }
             }
         }
+
+        return true;
     }
 }
