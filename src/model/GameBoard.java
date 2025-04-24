@@ -36,8 +36,14 @@ public class GameBoard {
         if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {
             GameBoard c = this.copy();
-            c.board[row][col].setVal(n);
-            return true;
+
+            // make sure the board is winnable with this value
+            if (c.solve()) {
+                this.board[row][col].setVal(n);
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
@@ -51,6 +57,8 @@ public class GameBoard {
         Random random = new Random();
         for (int i = 0; i < DIFFICULTY_REMOVE.get(this.difficulty); i++) {
             boolean isRemoved = false;
+
+            // keep trying until a cell was removed
             while (!isRemoved) {
                 int row = random.nextInt(SIZE);
                 int col = random.nextInt(SIZE);
@@ -60,11 +68,15 @@ public class GameBoard {
                     if (this.copy().solve()) {
                         isRemoved = true;
                     } else {
+                        // we set back the original value in this cell because if it is empty,
+                        // the game is not winnable
                         board[row][col].setVal(originalVal);
                     }
                 }
             }
         }
+
+        // set all the current non-empty values as non-changeable
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (board[i][j].getVal().equals(Numbers.Empty)) {
