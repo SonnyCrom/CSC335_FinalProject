@@ -6,9 +6,14 @@ import java.util.*;
 
 public class GameBoard {
     private static final int SIZE = 9;
-    private static final HashMap<Difficulty, Integer> DIFFICULTY_ADD = new HashMap<>() {{
-        put(Difficulty.EASY, 55);
-        put(Difficulty.HARD, 40);
+    private static final HashMap<Difficulty, Integer> DIFFICULTY_ATTEMTS = new HashMap<>() {{
+        put(Difficulty.EASY, 5);
+        put(Difficulty.HARD, 15);
+    }};
+
+    private static final HashMap<Difficulty, Integer> MAX_REMOVE = new HashMap<>() {{
+        put(Difficulty.EASY, 40);
+        put(Difficulty.HARD, SIZE * SIZE);
     }};
 
     private final GameBoardCell[][] board;
@@ -22,6 +27,8 @@ public class GameBoard {
                 board[i][j] = new GameBoardCell(Numbers.Empty, true);
             }
         }
+
+        fillBoard();
         setBoardForPlay();
     }
 
@@ -35,7 +42,8 @@ public class GameBoard {
             GameBoard c = this.copy();
             c.board[row][col].setVal(n);
             // make sure the board is winnable with this value
-            if (c.solve()) {
+            int solutions = c.countSolutions();
+            if (solutions > 0) {
                 this.board[row][col].setVal(n);
                 return true;
             } else {
@@ -51,36 +59,69 @@ public class GameBoard {
     }
 
     private void setBoardForPlay() {
-        Random random = new Random();
-        for (int i = 0; i < DIFFICULTY_ADD.get(this.difficulty); i++) {
-            boolean isAdded = false;
+        int attemts = DIFFICULTY_ATTEMTS.get(this.difficulty);
+        Random rnd = new Random();
+        int countRemoved = 0;
+        while (attemts > 0 && countRemoved < MAX_REMOVE.get(this.difficulty)) {
+            int row = rnd.nextInt(SIZE);
+            int col = rnd.nextInt(SIZE);
+            if (!this.board[row][col].getVal().equals(Numbers.Empty)) {
+                Numbers originalVal = this.board[row][col].getVal();
+                this.board[row][col].setVal(Numbers.Empty);
+                if (this.copy().countSolutions() != 1) {
+                    this.board[row][col].setVal(originalVal);
+                    attemts--;
+                } else {
+                    countRemoved++;
+                }
+            }
+        }
+    }
 
-            // keep trying until a cell was added
-            while (!isAdded) {
-                int row = random.nextInt(SIZE);
-                int col = random.nextInt(SIZE);
-                if (board[row][col].getVal().equals(Numbers.Empty)) {
-                    List<Numbers> numsList = Arrays.asList(Numbers.values());
-                    Collections.shuffle(numsList);
+    private List<int[]> getAllCells() {
+        List<int[]> cells = new ArrayList<>();
 
-                    for (Numbers n : numsList) {
-                        if (!n.equals(Numbers.Empty) && fillPlace(n, row, col)) {
-                            isAdded = true;
-                            break;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                cells.add(new int[]{i, j});
+            }
+        }
+        return cells;
+    }
+
+    private boolean isBoardFull() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (this.board[i][j].getVal().equals(Numbers.Empty)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean fillBoard() {
+        List<int[]> cells = getAllCells();
+
+        for (int[] cell : cells) {
+            if (this.board[cell[0]][cell[1]].getVal().equals(Numbers.Empty)) {
+                List<Numbers> numsList = Arrays.asList(Numbers.values());
+                Collections.shuffle(numsList);
+
+                for (Numbers n : numsList) {
+                    if (!n.equals(Numbers.Empty) && isValidPlacement(n, cell[0], cell[1])) {
+                        this.board[cell[0]][cell[1]].setVal(n);
+                        if (isBoardFull() || fillBoard()) {
+                            return true;
                         }
                     }
                 }
+                this.board[cell[0]][cell[1]].setVal(Numbers.Empty);
+                break;
             }
         }
 
-        // set all the current non-empty values as non-changeable
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (!board[i][j].getVal().equals(Numbers.Empty)) {
-                    board[i][j].setCanChange(false);
-                }
-            }
-        }
+        return isBoardFull();
     }
 
     private boolean isNumberInRow(Numbers n, int row) {
@@ -119,31 +160,32 @@ public class GameBoard {
         return !isNumberInBox(n, row, col) && !isNumberInRow(n, row) && !isNumberInCol(n, col);
     }
 
-    private boolean solve() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (board[i][j].getVal().equals(Numbers.Empty)) {
-                    for (int num = 0; num < Numbers.values().length - 1; num++) {
-                        Numbers numEnum = Numbers.values()[num];
-                        if (isValidPlacement(numEnum, i, j)) {
-                            board[i][j].setVal(numEnum);
+    private int countSolutions() {
+        return countSolutionsHelper(0, 0);
+    }
 
-                            if (this.solve()) {
-                                return true;
-                            }
-                            // if we were not able to solve the game with this placement, reset spot and try another number
-                            else {
-                                board[i][j].setVal(Numbers.Empty);
-                            }
-                        }
-                    }
+    private int countSolutionsHelper(int row, int col) {
+        if (row == SIZE) {
+            return 1;
+        }
 
-                    // we try to fill that spot with every number and all failed
-                    return false;
-                }
+        int nextRow = (col == SIZE - 1) ? row + 1 : row;
+        int nextCol = (col + 1) % SIZE;
+
+        if (!board[row][col].getVal().equals(Numbers.Empty)) {
+            return countSolutionsHelper(nextRow, nextCol);
+        }
+
+        int count = 0;
+        for (int num = 0; num < Numbers.values().length - 1; num++) {
+            Numbers numEnum = Numbers.values()[num];
+            if (isValidPlacement(numEnum, row, col)) {
+                board[row][col].setVal(numEnum);
+                count += countSolutionsHelper(nextRow, nextCol);
+                board[row][col].setVal(Numbers.Empty);
             }
         }
 
-        return true;
+        return count;
     }
 }
