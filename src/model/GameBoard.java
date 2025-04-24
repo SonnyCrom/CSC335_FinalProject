@@ -2,25 +2,24 @@ package model;
 
 import com.google.gson.Gson;
 
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class GameBoard {
     private static final int SIZE = 9;
-    private static final HashMap<Difficulty, Integer> DIFFICULTY_REMOVE = new HashMap<>() {{
-        put(Difficulty.EASY, 30);
-        put(Difficulty.HARD, 45);
+    private static final HashMap<Difficulty, Integer> DIFFICULTY_ADD = new HashMap<>() {{
+        put(Difficulty.EASY, 55);
+        put(Difficulty.HARD, 40);
     }};
 
     private final GameBoardCell[][] board;
     private final Difficulty difficulty;
 
-    public GameBoard(Numbers[][] initialValues, Difficulty difficulty) {
+    public GameBoard(Difficulty difficulty) {
         board = new GameBoardCell[SIZE][SIZE];
         this.difficulty = difficulty;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                board[i][j] = new GameBoardCell(initialValues[i][j], true);
+                board[i][j] = new GameBoardCell(Numbers.Empty, true);
             }
         }
         setBoardForPlay();
@@ -34,7 +33,7 @@ public class GameBoard {
         if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {
             GameBoard c = this.copy();
-
+            c.board[row][col].setVal(n);
             // make sure the board is winnable with this value
             if (c.solve()) {
                 this.board[row][col].setVal(n);
@@ -53,22 +52,22 @@ public class GameBoard {
 
     private void setBoardForPlay() {
         Random random = new Random();
-        for (int i = 0; i < DIFFICULTY_REMOVE.get(this.difficulty); i++) {
-            boolean isRemoved = false;
+        for (int i = 0; i < DIFFICULTY_ADD.get(this.difficulty); i++) {
+            boolean isAdded = false;
 
-            // keep trying until a cell was removed
-            while (!isRemoved) {
+            // keep trying until a cell was added
+            while (!isAdded) {
                 int row = random.nextInt(SIZE);
                 int col = random.nextInt(SIZE);
-                Numbers originalVal = board[row][col].getVal();
-                if (!originalVal.equals(Numbers.Empty)) {
-                    board[row][col].setVal(Numbers.Empty);
-                    if (this.copy().solve()) {
-                        isRemoved = true;
-                    } else {
-                        // we set back the original value in this cell because if it is empty,
-                        // the game is not winnable
-                        board[row][col].setVal(originalVal);
+                if (board[row][col].getVal().equals(Numbers.Empty)) {
+                    List<Numbers> numsList = Arrays.asList(Numbers.values());
+                    Collections.shuffle(numsList);
+
+                    for (Numbers n : numsList) {
+                        if (!n.equals(Numbers.Empty) && fillPlace(n, row, col)) {
+                            isAdded = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -77,7 +76,7 @@ public class GameBoard {
         // set all the current non-empty values as non-changeable
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (board[i][j].getVal().equals(Numbers.Empty)) {
+                if (!board[i][j].getVal().equals(Numbers.Empty)) {
                     board[i][j].setCanChange(false);
                 }
             }
@@ -124,7 +123,7 @@ public class GameBoard {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (board[i][j].getVal().equals(Numbers.Empty)) {
-                    for (int num = 1; num < Numbers.values().length; num++) {
+                    for (int num = 0; num < Numbers.values().length - 1; num++) {
                         Numbers numEnum = Numbers.values()[num];
                         if (isValidPlacement(numEnum, i, j)) {
                             board[i][j].setVal(numEnum);
