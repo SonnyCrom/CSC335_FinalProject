@@ -21,7 +21,7 @@ public class Main {
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
     	
-		//StartScreen view = new StartScreen();
+		StartScreen view = new StartScreen();
     	
     	
         for (int k = 0; k <100; k++) {

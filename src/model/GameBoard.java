@@ -12,7 +12,7 @@ import java.util.*;
  * of how many solutions exist (countSolutions in this program).
  * */
 
-public class GameBoard{
+public class GameBoard {
     private static final int SIZE = 9;
     private static final HashMap<Difficulty, Integer> DIFFICULTY_ATTEMTS = new HashMap<>() {{
         put(Difficulty.EASY, 5);
@@ -199,88 +199,87 @@ public class GameBoard{
 
         return count;
     }
-    
+
     private GameBoard solve() {
-    	GameBoard solution = this.copy();
-    	if(solution.solveHelper(0, 0)) {
-    		return solution;
-    	}
-    	else {
-    		return null;
-    	}
+        GameBoard solution = this.copy();
+        if (solution.solveHelper(0, 0)) {
+            return solution;
+        } else {
+            return null;
+        }
     }
-    
+
     private boolean solveHelper(int row, int col) {
-    	if(row == SIZE)
-    		return true;
+        if (row == SIZE)
+            return true;
         int nextRow = (col == SIZE - 1) ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
         if (!board[row][col].getVal().equals(Numbers.Empty)) {
             return solveHelper(nextRow, nextCol);
         }
-        
-        for(int n = 0; n < Numbers.values().length - 1; n++) {
-        	Numbers numEnum = Numbers.values()[n];
-        	if(isValidPlacement(numEnum, row, col)) {
-        		board[row][col].setVal(numEnum);
-        		if(solveHelper(nextRow, nextCol)) {
-        			return true;
-        		}
-        		board[row][col].setVal(Numbers.Empty);
-        	}
+
+        for (int n = 0; n < Numbers.values().length - 1; n++) {
+            Numbers numEnum = Numbers.values()[n];
+            if (isValidPlacement(numEnum, row, col)) {
+                board[row][col].setVal(numEnum);
+                if (solveHelper(nextRow, nextCol)) {
+                    return true;
+                }
+                board[row][col].setVal(Numbers.Empty);
+            }
         }
-        
+
         return false;
     }
-    
+
     // how a user adds a number to a board, doesn't check if the move is a good one
     public boolean addNumber(Numbers n, int row, int col) {
-    	if (board[row][col].canChange()) {
-    		board[row][col].setVal(n);
-    		return true;
-    	}
-    	return false;
+        if (board[row][col].canChange()) {
+            board[row][col].setVal(n);
+            return true;
+        }
+        return false;
     }
-    
+
     // how a user removes a number
     public boolean removeNumber(int row, int col) {
-    	if(board[row][col].canChange()) {
-    		board[row][col].setVal(Numbers.Empty);
-    		return true;
-    	}
-    	return false;
+        if (board[row][col].canChange()) {
+            board[row][col].setVal(Numbers.Empty);
+            return true;
+        }
+        return false;
     }
-    
+
     // fills a single cell with a correct solution
     public void giveHint(int row, int col) {
-    	if(board[row][col].canChange()) {
-    		GameBoard solution = this.solve();
-    		if(solution != null) {
-    			board[row][col].setVal(solution.getValueAt(row, col));
-    		}
-    	}
+        if (board[row][col].canChange()) {
+            GameBoard solution = this.solve();
+            if (solution != null) {
+                board[row][col].setVal(solution.getValueAt(row, col));
+            }
+        }
     }
-    
-    public HashSet<GameBoardCell> conflictingCells(){
-    	GameBoard solution = this.solve();
-    	HashSet<GameBoardCell> conflicts = new HashSet<GameBoardCell>();
-    	for(int i = 0; i < SIZE; i++) {
-    		for(int j = 0; j < SIZE; j++) {
-    			if(!board[i][j].equals(solution.getValueAt(i,j))) {
-    				conflicts.add(board[i][j].copy());
-    			}
-    		}
-    	}
-    	return conflicts;
+
+    public HashSet<GameBoardCell> conflictingCells() {
+        GameBoard solution = this.solve();
+        HashSet<GameBoardCell> conflicts = new HashSet<GameBoardCell>();
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (!board[i][j].equals(solution.getValueAt(i, j))) {
+                    conflicts.add(board[i][j].copy());
+                }
+            }
+        }
+        return conflicts;
     }
-    
+
     public boolean gameOver() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-            	if(!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty))
-            		return false;
+                if (!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty))
+                    return false;
             }
         }
-    	return true;
+        return true;
     }
 }
