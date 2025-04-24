@@ -6,6 +6,8 @@ import model.Numbers;
 public class Main {
 
     public static void main(String[] args) {
+
+        // TODO: everything here is testing, remove this
         Numbers[][] gg = {
                 {Numbers.Eight, Numbers.One, Numbers.Three, Numbers.Two, Numbers.Seven, Numbers.Five, Numbers.Six, Numbers.Nine, Numbers.Four},
                 {Numbers.Six, Numbers.Two, Numbers.Seven, Numbers.Nine, Numbers.Four, Numbers.Eight, Numbers.Five, Numbers.One, Numbers.Three},
