@@ -1,36 +1,18 @@
 package model;
 
-import java.util.Objects;
 
 public class GameBoardCell {
     private Numbers val;
+    private Numbers correctVal;
     private boolean canChange;
-    private int row;
-    private int col;
 
-    public GameBoardCell(Numbers val, boolean canChange, int row, int col){
+    public GameBoardCell(Numbers val, boolean canChange) {
         this.val = val;
         this.canChange = canChange;
-        this.row = row;
-        this.col = col;
+        this.correctVal = Numbers.Empty;
     }
 
-    public GameBoardCell(GameBoardCell other) {
-    	this.val = other.getVal();
-    	this.canChange = other.canChange();
-    	this.row = other.getRow();
-    	this.col = other.getCol();
-    }
-    
-    private int getCol() {
-    	return this.col;
-	}
-
-	private int getRow() {
-		return this.row;
-	}
-
-	public Numbers getVal() {
+    public Numbers getVal() {
         return val;
     }
 
@@ -44,28 +26,15 @@ public class GameBoardCell {
         return canChange;
     }
 
-    public void setCanChange(boolean canChange){
+    public void setCanChange(boolean canChange) {
         this.canChange = canChange;
     }
-    
-    public GameBoardCell copy() {
-    	return new GameBoardCell(this);
+
+    public void setCorrectVal(Numbers correctVal) {
+        this.correctVal = correctVal;
     }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(canChange, col, row, val);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GameBoardCell other = (GameBoardCell) obj;
-		return canChange == other.canChange && col == other.col && row == other.row && val == other.val;
-	}
+    public Numbers getCorrectVal() {
+        return correctVal;
+    }
 }

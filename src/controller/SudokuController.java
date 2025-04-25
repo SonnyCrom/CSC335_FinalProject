@@ -3,92 +3,94 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.GameBoard;
-import model.Model;
-import view.BoardObserver;
-import view.Observer;
-import view.ValidGUI;
+import model.*;
+import view.*;
 
 public class SudokuController implements ActionListener {
-	private Model model;
+    private final SudokuModel model;
 
-	public SudokuController(Model model) {
-		this.model = model;
-	}
+    public SudokuController(Difficulty difficulty) {
+        this.model = new SudokuModel(difficulty);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
-		if(command.equals("empty")) {
-			model.changeNum(0);
-			return;
-		}
-		if(command.equals("one")) {
-			model.changeNum(1);
-			return;
-		}
-		if(command.equals("two")) {
-			model.changeNum(2);
-			return;
-		}
-		if(command.equals("three")) {
-			model.changeNum(3);
-			return;
-		}
-		if(command.equals("four")) {
-			model.changeNum(4);
-			return;
-		}
-		if(command.equals("five")) {
-			model.changeNum(5);
-			return;
-		}
-		if(command.equals("six")) {
-			model.changeNum(6);
-			return;
-		}
-		if(command.equals("seven")) {
-			model.changeNum(7);
-			return;
-		}
-		if(command.equals("eight")) {
-			model.changeNum(8);
-			return;
-		}
-		if(command.equals("nine")) {
-			model.changeNum(9);
-			return;
-		}
-		
-		
-		if(command.equals("start")) {
-			model.startGame(null);
-			return;
-		}
-		if(command.equals("Quit")) {
-			System.exit(0);
-		}
-		
-		// Board Button Interactions
-		int x = Integer.parseInt(command.substring(0, 1));
-		int y = Integer.parseInt(command.substring(2, 3));
-		if ((x >= 0 && x <9) && (y>= 0 && x <9)) {
-			model.selectBoard(x, y);
-			model.gui.updateBoard();
-		}
-	}
-	
-	public void addObserver(Observer observer) {
-		model.registerObserver(observer);
-	}
-	public void addBObserver(BoardObserver observer) {
-		model.registerBObserver(observer);
-	}
-	public GameBoard getBoard() {
-		return model.getBoard();
-	}
+    public SudokuController() {
+        this.model = new SudokuModel();
+    }
 
-	public void addValid(ValidGUI validGui) {
-		model.setValid(validGui);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("empty")) {
+            model.choseNumber(Numbers.Empty);
+            return;
+        }
+        if (command.equals("one")) {
+            model.choseNumber(Numbers.One);
+            return;
+        }
+        if (command.equals("two")) {
+            model.choseNumber(Numbers.Two);
+            return;
+        }
+        if (command.equals("three")) {
+            model.choseNumber(Numbers.Three);
+            return;
+        }
+        if (command.equals("four")) {
+            model.choseNumber(Numbers.Four);
+            return;
+        }
+        if (command.equals("five")) {
+            model.choseNumber(Numbers.Five);
+            return;
+        }
+        if (command.equals("six")) {
+            model.choseNumber(Numbers.Six);
+            return;
+        }
+        if (command.equals("seven")) {
+            model.choseNumber(Numbers.Seven);
+            return;
+        }
+        if (command.equals("eight")) {
+            model.choseNumber(Numbers.Eight);
+            return;
+        }
+        if (command.equals("nine")) {
+            model.choseNumber(Numbers.Nine);
+            return;
+        }
+        if (command.equals("hint")) {
+            model.choseHint();
+            return;
+        }
+
+        if (command.startsWith("Cell")) {
+            String[] commandSplit = command.split(" ");
+            int row = Integer.parseInt(commandSplit[1]);
+            int col = Integer.parseInt(commandSplit[2]);
+            cellClick(row, col);
+        }
+    }
+
+    public void addBtnObserver(BtnObserver btnObserver, int row, int col) {
+        this.model.registerNumberObserver(btnObserver, row, col);
+    }
+
+    public void loadBoard() {
+        this.model.loadBoard();
+    }
+
+    public void setMsgObserver(MsgObserver observer) {
+        this.model.setMsgObserver(observer);
+        model.choseNumber(Numbers.Empty);
+    }
+
+    public void setHintObserver(BtnObserver observer) {
+        this.model.setHintObserver(observer);
+    }
+
+    private void cellClick(int row, int col) {
+        model.updateCell(row, col);
+    }
 }
