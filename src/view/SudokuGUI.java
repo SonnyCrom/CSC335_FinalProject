@@ -35,13 +35,13 @@ public class SudokuGUI extends JFrame {
             put(0, new HashMap<Integer, Color>() {
                 {
                     put(0, Color.green);
-                    put(1, Color.red);
+                    put(1, new Color(255, 128, 128));
                     put(2, Color.cyan);
                 }
             });
             put(1, new HashMap<Integer, Color>() {
                 {
-                    put(0, Color.magenta);
+                    put(0, new Color(255, 128, 255));
                     put(1, Color.yellow);
                     put(2, Color.lightGray);
                 }
@@ -57,19 +57,13 @@ public class SudokuGUI extends JFrame {
     };
 
 
-//	public SudokuGUI() {
-//		this.controller = new SudokuController(new Model());
-//		this.setTitle("Sudoku!");
-//		this.setSize(500,500);
-//		this.setUp();
-//	}
-
     public SudokuGUI(Model model) {
         this.controller = new SudokuController(model);
         this.setTitle("Sudoku!");
-        this.setSize(600, 500);
-        this.setMinimumSize(new Dimension(600, 500));
+        this.setSize(600, 700);
+        this.setMinimumSize(new Dimension(600, 700));
         this.setUp();
+        this.controller.loadBoard();
     }
 
     private void setUp() {
@@ -169,7 +163,7 @@ public class SudokuGUI extends JFrame {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 NumberBtn btn = new NumberBtn(colorMap.get(i/3).get(j/3));
-                btn.setActionCommand(Integer.toString(i) + " " + Integer.toString(j));
+                btn.setActionCommand(" " + Integer.toString(i) + " " + Integer.toString(j));
                 btn.addActionListener(controller);
                 controller.addBtnObserver(btn, i, j);
                 boardPanel.add(btn);

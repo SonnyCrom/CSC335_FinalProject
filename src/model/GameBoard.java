@@ -97,7 +97,7 @@ public class GameBoard {
     private void lockNumbersAfterInit() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (!board[i][j].getVal().equals(Numbers.Empty)) {
+                if (board[i][j].getVal().equals(Numbers.Empty)) {
                     board[i][j].setCanChange(true);
                 } else {
                     board[i][j].setCanChange(false);

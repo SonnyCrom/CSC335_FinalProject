@@ -96,6 +96,10 @@ public class SudokuController implements ActionListener {
     }
 
     public void addBtnObserver(NumberBtnObserver btnObserver, int row, int col) {
+        this.model.registerNumberObserver(btnObserver, row, col);
+    }
 
+    public void loadBoard(){
+        this.model.loadBoard();
     }
 }
