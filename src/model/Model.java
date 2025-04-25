@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import controller.SudokuController;
@@ -17,11 +18,33 @@ public class Model {
 	private ArrayList<BoardObserver> bObservers;
 	private SudokuGUI gui;
 	private SudokuController controller;
+	private DbConnector db;
 	
 	public Model() {
 		this.observers = new ArrayList<Observer>();
 		this.bObservers = new ArrayList<BoardObserver>();
 		this.board = new GameBoard(Difficulty.EASY);
+		this.gui = new SudokuGUI(this);
+		this.controller = new SudokuController(this);
+		this.db = new DbConnector();
+	}
+	
+	public Model(boolean isSaved, Difficulty difficulty ) {
+		this.observers = new ArrayList<Observer>();
+		this.bObservers = new ArrayList<BoardObserver>();
+		this.db = new DbConnector();
+		if(isSaved) {
+			try {
+				this.board = db.getSaveGame();
+			} catch (IOException e) {
+				this.board = new GameBoard(difficulty);
+				System.err.println("Error: Could not load saved game");
+				e.printStackTrace();
+			}
+		}
+		else {
+			this.board = new GameBoard(difficulty);	
+		}
 		this.gui = new SudokuGUI(this);
 		this.controller = new SudokuController(this);
 	}
