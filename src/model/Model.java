@@ -56,7 +56,7 @@ public class Model {
 		this.y = j;
 		Numbers num = Numbers.Empty;
 		if (!board.getChangeAt(this.x, this.y)) {
-			this.valid.isValidMove(2);
+			this.valid.isValidMove(2); // Static Cell
 			return;
 		}
 		
@@ -64,9 +64,10 @@ public class Model {
 		//board.addNumber(num.fromInteger(this.number), this.x, this.y);
 		notifyBObservers();
 		if (board.getValueAt(this.x, this.y) == Numbers.Empty) {
-			this.valid.isValidMove(1);
+			this.valid.isValidMove(1); // 
 		} else {
-			this.valid.isValidMove(0);
+			this.valid.isValidMove(0); // Is valid
+			db.updateGameSave(board);
 		}
 	}
 
