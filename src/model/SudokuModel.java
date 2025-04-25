@@ -19,6 +19,8 @@ public class SudokuModel {
 
     public SudokuModel(Difficulty difficulty) {
         this.board = new GameBoard(difficulty);
+        this.db = new DbConnector();
+        this.db.saveNewGameSave(this.board);
         setUpModel();
     }
 
@@ -35,7 +37,9 @@ public class SudokuModel {
 //        this.observers = new ArrayList<Observer>();
 //        this.bObservers = new ArrayList<BoardObserver>();
         this.numberObservers = new HashMap<>();
-        this.db = new DbConnector();
+        if (db == null) {
+            this.db = new DbConnector();
+        }
         this.selectedNumber = Numbers.Empty;
     }
 
@@ -70,5 +74,21 @@ public class SudokuModel {
     public void choseHint() {
         isChosingHint = true;
         msgObserver.hint(true);
+    }
+
+    public void updateCell(int row, int col) {
+        if (!isChosingHint) {
+            boolean fillResult = this.board.fillPlace(selectedNumber, row, col);
+            if (fillResult) {
+                numberObservers.get(row).get(col).setText(selectedNumber);
+                msgObserver.newNumber(selectedNumber.toInteger());
+                db.updateGameSave(board);
+            } else {
+                msgObserver.incorrect(selectedNumber.toInteger());
+            }
+        } else {
+            board.useHintAt(row, col);
+            db.updateGameSave(board);
+        }
     }
 }

@@ -49,7 +49,15 @@ public class GameBoard {
         return board[row][col].canChange();
     }
 
+    public void useHintAt(int row, int col) {
+        Numbers correctNum = board[row][col].getCorrectVal();
+        fillPlace(correctNum, row, col);
+    }
+
     public boolean fillPlace(Numbers n, int row, int col) {
+        if (board[row][col].getVal().equals(n) && board[row][col].getCorrectVal().equals(n)) {
+            return true;
+        }
         if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {
             GameBoard c = this.copy();

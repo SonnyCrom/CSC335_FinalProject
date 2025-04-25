@@ -87,7 +87,6 @@ public class SudokuController implements ActionListener {
     }
 
     private void cellClick(int row, int col) {
-        System.out.println(row);
-        System.out.println(col);
+        model.updateCell(row, col);
     }
 }
