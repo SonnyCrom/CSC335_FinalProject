@@ -3,6 +3,7 @@ import model.Difficulty;
 import model.GameBoard;
 import model.Numbers;
 import view.StartScreen;
+import view.SudokuGUI;
 
 public class Main {
 
@@ -22,10 +23,10 @@ public class Main {
 //        };
     	
 		//StartScreen view = new StartScreen();
+    	SudokuGUI gameView = new SudokuGUI();
     	
     	
-        for (int k = 0; k <100; k++) {
-
+        for (int k = 0; k <0; k++) {
             GameBoard g = new GameBoard(Difficulty.HARD);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
