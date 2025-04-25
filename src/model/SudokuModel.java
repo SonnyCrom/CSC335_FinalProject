@@ -15,6 +15,7 @@ public class SudokuModel {
     private DbConnector db;
     private HashMap<Integer, HashMap<Integer, NumberBtnObserver>> numberObservers;
     private MsgObserver msgObserver;
+    private boolean isChosingHint;
 
     public SudokuModel(Difficulty difficulty) {
         this.board = new GameBoard(difficulty);
@@ -35,6 +36,7 @@ public class SudokuModel {
 //        this.bObservers = new ArrayList<BoardObserver>();
         this.numberObservers = new HashMap<>();
         this.db = new DbConnector();
+        this.selectedNumber = Numbers.Empty;
     }
 
     public void loadBoard() {
@@ -60,6 +62,13 @@ public class SudokuModel {
     }
 
     public void choseNumber(Numbers num) {
+        selectedNumber = num;
+        isChosingHint = false;
         msgObserver.newNumber(num.toInteger());
+    }
+
+    public void choseHint() {
+        isChosingHint = true;
+        msgObserver.hint(true);
     }
 }

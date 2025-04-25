@@ -9,7 +9,11 @@ public class MsgLabel extends JLabel implements MsgObserver {
     }
 
     public void newNumber(int num) {
-        this.setText("Current number: " + Integer.toString(num));
+        if (num == 0) {
+            this.setText("Current number: empty");
+        } else {
+            this.setText("Current number: " + Integer.toString(num));
+        }
     }
 
     public void hint(boolean haveHints) {
