@@ -86,6 +86,10 @@ public class SudokuController implements ActionListener {
         model.choseNumber(Numbers.Empty);
     }
 
+    public void setEndGameObserver(EndGameObserver observer) {
+        model.setEndGameObserver(observer);
+    }
+
     public void setHintObserver(BtnObserver observer) {
         this.model.setHintObserver(observer);
     }
