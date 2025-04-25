@@ -1,0 +1,66 @@
+package tests;
+
+import model.StartModel;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class StartModelTests {
+    private static final String jsonTest = "{\"board\":[[{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":true},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":true},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":true},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":true},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":false},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":true},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":false}],[{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":false},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":true},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":true},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":true},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":true},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":false},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":true}],[{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":true},{\"val\":\"Empty\",\"correctVal\":\"Three\",\"canChange\":true},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":true},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":false},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":false},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":true}],[{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":false},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":false},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":true},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":true},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":false},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":true},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":false},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false}],[{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":false},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":false},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":true},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":true},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":true},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":true},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":true}],[{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":true},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":true},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":false},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":false},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":true},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":true},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":false}],[{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":false},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":false},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":false},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":true},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":true},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":false}],[{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":false},{\"val\":\"One\",\"correctVal\":\"One\",\"canChange\":false},{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":false},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":false},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":false},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":true},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":true}],[{\"val\":\"Four\",\"correctVal\":\"Four\",\"canChange\":true},{\"val\":\"Three\",\"correctVal\":\"Three\",\"canChange\":false},{\"val\":\"Two\",\"correctVal\":\"Two\",\"canChange\":false},{\"val\":\"Five\",\"correctVal\":\"Five\",\"canChange\":false},{\"val\":\"Empty\",\"correctVal\":\"One\",\"canChange\":true},{\"val\":\"Six\",\"correctVal\":\"Six\",\"canChange\":true},{\"val\":\"Eight\",\"correctVal\":\"Eight\",\"canChange\":false},{\"val\":\"Seven\",\"correctVal\":\"Seven\",\"canChange\":false},{\"val\":\"Nine\",\"correctVal\":\"Nine\",\"canChange\":false}]],\"difficulty\":\"EASY\",\"hints\":17}";
+    private static File dbFile;
+    private static File testDir;
+
+    @BeforeEach
+    void beforeEach() {
+        try {
+            testDir = new File("testFiles");
+            if (!testDir.exists()) {
+                assertTrue(testDir.mkdir());
+            }
+
+            dbFile = new File("testFiles/saveGame.json");
+            Assertions.assertTrue(dbFile.createNewFile());
+            BufferedWriter writer = new BufferedWriter(new FileWriter(dbFile, true));
+            writer.write(jsonTest);
+            writer.close();
+        } catch (IOException e) {
+            fail();
+        }
+    }
+
+    @AfterEach
+    void afterEach() {
+        if (dbFile.exists()) {
+            Assertions.assertTrue(dbFile.delete());
+        }
+        if (testDir.exists()) {
+            assertTrue(testDir.delete());
+        }
+    }
+
+    @Test
+    void testSetLoadSaveEnableTrue() {
+        StartModel sm = new StartModel(dbFile.getAbsolutePath());
+        JButton btn = new JButton();
+        sm.setLoadSaveEnable(btn);
+        assertTrue(btn.isEnabled());
+    }
+
+    @Test
+    void testSetLoadSaveEnableFalse() {
+        StartModel sm = new StartModel(dbFile.getAbsolutePath());
+        dbFile.delete();
+        JButton btn = new JButton();
+        sm.setLoadSaveEnable(btn);
+        assertFalse(btn.isEnabled());
+    }
+}

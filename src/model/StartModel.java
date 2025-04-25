@@ -10,7 +10,7 @@ public class StartModel {
     }
 
     public StartModel(String file_path){
-        db = new DbConnector();
+        db = new DbConnector(file_path);
     }
 
     public void setLoadSaveEnable(JButton btn) {
