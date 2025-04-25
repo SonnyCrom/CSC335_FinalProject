@@ -45,6 +45,10 @@ public class GameBoard {
         return board[row][col].getVal();
     }
 
+    public boolean getChangeAt(int row, int col) {
+        return board[row][col].canChange();
+    }
+
     public boolean fillPlace(Numbers n, int row, int col) {
         if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {

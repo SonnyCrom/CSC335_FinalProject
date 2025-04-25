@@ -7,7 +7,7 @@ import model.Numbers;
 public class NumbersGUI extends JLabel implements Observer{
 	
 	public NumbersGUI() {
-		super("Current number " + Integer.toString(0),JLabel.LEFT);
+		super("Current number: " + Integer.toString(0),JLabel.LEFT);
 		this.setSize(250,100);
 	}
 	
