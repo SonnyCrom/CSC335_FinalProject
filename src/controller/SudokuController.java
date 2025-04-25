@@ -3,18 +3,28 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Timer;
+
 import model.*;
 import view.*;
 
 public class SudokuController implements ActionListener {
     private final SudokuModel model;
+    private TimeModel timerModel;
 
-    public SudokuController(Difficulty difficulty) {
+    public SudokuController(Difficulty difficulty, int time, TimerObserver timerObserver) {
         this.model = new SudokuModel(difficulty);
+        this.timerModel = new TimeModel(time);
+        this.timerModel.setObserver(timerObserver);
+        this.timerModel.startTimer();
     }
 
-    public SudokuController() {
+    public SudokuController( TimerObserver timerObserver) {
+        this.timerModel = new TimeModel(0);
         this.model = new SudokuModel();
+        this.timerModel = new TimeModel(0);
+        this.timerModel.setObserver(timerObserver);
+        this.timerModel.startTimer();
     }
 
     @Override
@@ -64,7 +74,7 @@ public class SudokuController implements ActionListener {
             model.choseHint();
             return;
         }
-
+        
         if (command.startsWith("Cell")) {
             String[] commandSplit = command.split(" ");
             int row = Integer.parseInt(commandSplit[1]);
@@ -75,6 +85,10 @@ public class SudokuController implements ActionListener {
 
     public void addBtnObserver(BtnObserver btnObserver, int row, int col) {
         this.model.registerNumberObserver(btnObserver, row, col);
+    }
+    
+    public void addTimerObserver(TimerObserver timer) {
+    	this.timerModel.setObserver(timer);
     }
 
     public void loadBoard() {
@@ -93,8 +107,10 @@ public class SudokuController implements ActionListener {
     public void setHintObserver(BtnObserver observer) {
         this.model.setHintObserver(observer);
     }
+    
 
     private void cellClick(int row, int col) {
         model.updateCell(row, col);
     }
+    
 }

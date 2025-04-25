@@ -3,6 +3,7 @@ package view;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Time;
 import java.util.HashMap;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import javax.swing.*;
 import model.Difficulty;
 import controller.SudokuController;
 
-public class SudokuGUI extends JFrame implements EndGameObserver {
+public class SudokuGUI extends JFrame implements EndGameObserver{
 
     private final SudokuController controller;
     private final int SIZE = 9;
@@ -43,19 +44,21 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
 
 
     public SudokuGUI(Difficulty difficulty) {
-        this.controller = new SudokuController(difficulty);
+        TimerLabel timer = new TimerLabel(0);
+        this.controller = new SudokuController(difficulty, 0, timer);
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }
 
     public SudokuGUI() {
-        this.controller = new SudokuController();
+        TimerLabel timer = new TimerLabel(0);
+        this.controller = new SudokuController(timer);
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }
@@ -139,6 +142,11 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         hint.addActionListener(controller);
         controller.setHintObserver(hint);
         mainPanel.add(hint);
+        
+        //timer label
+        TimerLabel timer = new TimerLabel(0);
+        controller.addTimerObserver(timer);
+        mainPanel.add(timer);
 
 
         //adding a window listener for closing the app
@@ -168,7 +176,7 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
     }
 
     @Override
-    public void handleEndGame() {
+    public void handleEndGame() {    	
         JOptionPane.showMessageDialog(
                 this,
                 "You Won!!! Click ok to go back to main menu",
@@ -176,5 +184,6 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
                 JOptionPane.PLAIN_MESSAGE);
         new StartScreen();
         this.dispose();
-    }
+    } 
+    
 }

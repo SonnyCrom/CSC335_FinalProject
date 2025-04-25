@@ -2,6 +2,7 @@ package model;
 
 import view.EndGameObserver;
 import view.MsgObserver;
+import view.TimerObserver;
 import view.BtnObserver;
 
 import java.io.IOException;
@@ -10,14 +11,18 @@ import java.util.HashMap;
 public class SudokuModel {
     private GameBoard board;
     private Numbers selectedNumber;
+    private TimeModel timerModel;
     private DbConnector db;
     private HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
     private MsgObserver msgObserver;
     private BtnObserver hintObserver;
+    private TimerObserver timeObserver;
     private EndGameObserver endGameObserver;
     private boolean isChoosingHint;
 
     public SudokuModel(Difficulty difficulty) {
+    	this.timerModel = new TimeModel(0);
+    	this.timerModel.startTimer();
         setUpModel();
         this.board = new GameBoard(difficulty);
         this.db.saveNewGameSave(this.board);
@@ -113,11 +118,13 @@ public class SudokuModel {
         endGameObserver = observer;
         handleIfGameOver();
     }
+    
 
     public void handleIfGameOver() {
         if (board.gameOver()) {
             db.deleteSaveGame();
             endGameObserver.handleEndGame();
+            this.timerModel.stopTimer();
         }
     }
 }
