@@ -49,7 +49,7 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         this.controller = new SudokuController(difficulty);
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }
@@ -58,7 +58,7 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         this.controller = new SudokuController();
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }

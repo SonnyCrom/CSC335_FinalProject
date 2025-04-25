@@ -125,8 +125,11 @@ public class SudokuModel {
     }
     
     public void incrementTimer() {
-    	this.board.incSecs();
-    	notifyTimer();
+    	if(!board.gameOver()) {
+        	this.board.incSecs();
+        	db.updateGameSave(board);
+        	notifyTimer();
+    	}
     }
 
 	private void notifyTimer() {
