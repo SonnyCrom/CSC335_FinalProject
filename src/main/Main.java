@@ -27,21 +27,19 @@ public class Main {
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
 
-        for (int k = 0; k <0; k++) {
-            GameBoard g = new GameBoard(Difficulty.HARD);
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                	System.out.print(g.getChangeAt(i, j) + " ");
-                System.out.println();
-                System.out.println("------------------");
-            }
-        }
+//        for (int k = 0; k <0; k++) {
+//            GameBoard g = new GameBoard(Difficulty.HARD);
+//            for (int i = 0; i < 9; i++) {
+//                for (int j = 0; j < 9; j++) {
+//                	System.out.print(g.getChangeAt(i, j) + " ");
+//                System.out.println();
+//                System.out.println("------------------");
+//            }
+//        }
 
-        
-        
+
         StartScreen view = new StartScreen();
         // This is what you should call to open gameboard \/
         // Model model = new Model();
-        }
     }
- }
+}
