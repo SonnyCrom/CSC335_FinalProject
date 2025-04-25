@@ -25,8 +25,8 @@ public class Main {
 //                {Numbers.Nine, Numbers.Eight, Numbers.Two, Numbers.Five, Numbers.One, Numbers.Six, Numbers.Three, Numbers.Four, Numbers.Seven},
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
-      StartScreen view = new StartScreen();
-    	SudokuGUI gameView = new SudokuGUI();
+        StartScreen view = new StartScreen();
+        SudokuGUI gameView = new SudokuGUI();
 
         DbConnector db = new DbConnector();
         GameBoard g = new GameBoard(Difficulty.HARD);
@@ -49,20 +49,20 @@ public class Main {
         System.out.println();
 
         try {
-            g = db.getSaveGame();    
-        for (int k = 0; k <0; k++) {
-            GameBoard g = new GameBoard(Difficulty.HARD);
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    Numbers val = g.getValueAt(i, j);
-                    if (val == Numbers.Empty) {
-                        System.out.print("X|");
-                    } else {
-                        System.out.print(val.ordinal() + 1 + "|");
+            g = db.getSaveGame();
+            for (int k = 0; k < 0; k++) {
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        Numbers val = g.getValueAt(i, j);
+                        if (val == Numbers.Empty) {
+                            System.out.print("X|");
+                        } else {
+                            System.out.print(val.ordinal() + 1 + "|");
+                        }
                     }
+                    System.out.println();
+                    System.out.println("------------------");
                 }
-                System.out.println();
-                System.out.println("------------------");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -72,4 +72,3 @@ public class Main {
         System.out.println(db.isSaveExist());
     }
 }
-
