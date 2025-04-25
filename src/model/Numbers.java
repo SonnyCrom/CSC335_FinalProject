@@ -1,6 +1,8 @@
 package model;
 
-public enum Numbers {
+import view.Observer;
+
+public enum Numbers{
     One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Empty;
     
     public int toInteger() {
