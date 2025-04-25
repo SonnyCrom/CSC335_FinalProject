@@ -27,48 +27,5 @@ public class Main {
 //        };
         StartScreen view = new StartScreen();
         SudokuGUI gameView = new SudokuGUI();
-
-        DbConnector db = new DbConnector();
-        GameBoard g = new GameBoard(Difficulty.HARD);
-        System.out.println(db.isSaveExist());
-        db.saveNewGameSave(g);
-        System.out.println(db.isSaveExist());
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                Numbers val = g.getValueAt(i, j);
-                if (val == Numbers.Empty) {
-                    System.out.print("X|");
-                } else {
-                    System.out.print(val.ordinal() + 1 + "|");
-                }
-            }
-            System.out.println();
-            System.out.println("------------------");
-        }
-        System.out.println();
-
-        try {
-            g = db.getSaveGame();
-            for (int k = 0; k < 0; k++) {
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        Numbers val = g.getValueAt(i, j);
-                        if (val == Numbers.Empty) {
-                            System.out.print("X|");
-                        } else {
-                            System.out.print(val.ordinal() + 1 + "|");
-                        }
-                    }
-                    System.out.println();
-                    System.out.println("------------------");
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        db.deleteSaveGame();
-        System.out.println(db.isSaveExist());
     }
 }
