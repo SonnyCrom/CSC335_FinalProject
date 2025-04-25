@@ -49,9 +49,10 @@ public class GameBoard {
         return board[row][col].canChange();
     }
 
-    public void useHintAt(int row, int col) {
+    public Numbers useHintAt(int row, int col) {
         Numbers correctNum = board[row][col].getCorrectVal();
         fillPlace(correctNum, row, col);
+        return correctNum;
     }
 
     public boolean fillPlace(Numbers n, int row, int col) {

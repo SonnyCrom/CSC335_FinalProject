@@ -82,7 +82,8 @@ public class SudokuModel {
                 msgObserver.incorrect(selectedNumber.toInteger());
             }
         } else {
-            board.useHintAt(row, col);
+            Numbers correctNum = board.useHintAt(row, col);
+            numberObservers.get(row).get(col).setText(correctNum);
             db.updateGameSave(board);
         }
     }
