@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.ModuleLayer.Controller;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,7 +28,34 @@ public class SudokuGUI extends JFrame {
     private ValidGUI validGui;
     private JPanel panel;
     private SudokuController controller;
-    private int SIZE = 9;
+    private final int SIZE = 9;
+
+    private final HashMap<Integer, HashMap<Integer, Color>> colorMap = new HashMap<>() {
+        {
+            put(0, new HashMap<Integer, Color>() {
+                {
+                    put(0, Color.green);
+                    put(1, Color.red);
+                    put(2, Color.cyan);
+                }
+            });
+            put(1, new HashMap<Integer, Color>() {
+                {
+                    put(0, Color.magenta);
+                    put(1, Color.yellow);
+                    put(2, Color.lightGray);
+                }
+            });
+            put(2, new HashMap<Integer, Color>(){
+                {
+                    put(0, Color.pink);
+                    put(1, Color.gray);
+                    put(2, Color.white);
+                }
+            });
+        }
+    };
+
 
 //	public SudokuGUI() {
 //		this.controller = new SudokuController(new Model());
@@ -139,7 +168,7 @@ public class SudokuGUI extends JFrame {
         this.add(boardPanel, BorderLayout.NORTH);
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                NumberBtn btn = new NumberBtn(Color.green);
+                NumberBtn btn = new NumberBtn(colorMap.get(i/3).get(j/3));
                 btn.setActionCommand(Integer.toString(i) + " " + Integer.toString(j));
                 btn.addActionListener(controller);
                 controller.addBtnObserver(btn, i, j);
