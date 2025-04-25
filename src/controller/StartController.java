@@ -11,11 +11,15 @@ import javax.swing.SwingUtilities;
 
 import model.Difficulty;
 import model.Model;
+import model.StartModel;
+import view.SudokuGUI;
 
 public class StartController implements ActionListener{
-	
+
+	private final StartModel model;
+
 	public StartController() {
-		
+		this.model = new StartModel();
 	}
 	
 	@Override
@@ -23,7 +27,7 @@ public class StartController implements ActionListener{
 		String command = e.getActionCommand();
 		
 		if(command.equals("StartHard")) {
-			Model model = new Model(false, Difficulty.HARD);
+			new SudokuGUI(Difficulty.HARD);
 			Object start =  e.getSource();
 			Window window = SwingUtilities.getWindowAncestor((Component) start);
 			window.dispose();
@@ -33,20 +37,23 @@ public class StartController implements ActionListener{
 			System.exit(0);
 		}
 		if(command.equals("StartEasy")) {
-			Model model = new Model(false, Difficulty.EASY);
+			new SudokuGUI(Difficulty.EASY);
 			Object start =  e.getSource();
 			Window window = SwingUtilities.getWindowAncestor((Component) start);
 			window.dispose();
 			return;
 		}
 		if(command.equals("Load")) {
-			Model model = new Model(true, Difficulty.EASY);
+			new SudokuGUI();
 			Object start =  e.getSource();
 			Window window = SwingUtilities.getWindowAncestor((Component) start);
 			window.dispose();
 			return;
 		}
-		
+
 	}
 
+	public void setLoadBtnEnable(JButton btn){
+		model.setLoadSaveEnable(btn);
+	}
 }

@@ -3,103 +3,98 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.GameBoard;
-import model.Model;
-import view.BoardObserver;
-import view.NumberBtnObserver;
-import view.Observer;
-import view.ValidGUI;
+import model.*;
+import view.*;
 
 public class SudokuController implements ActionListener {
-    private Model model;
+    private SudokuModel model;
+    private Numbers currentNumber;
+    private boolean isUsingHint;
 
-    public SudokuController(Model model) {
-        this.model = model;
+    public SudokuController(Difficulty difficulty) {
+        this.model = new SudokuModel(difficulty);
+        setUp();
     }
+
+    public SudokuController() {
+        this.model = new SudokuModel();
+        setUp();
+    }
+
+    private void setUp() {
+        isUsingHint = false;
+        currentNumber = Numbers.Empty;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.equals("empty")) {
-            model.changeNum(0);
+            choseNumber(Numbers.Empty);
             return;
         }
         if (command.equals("one")) {
-            model.changeNum(1);
+            choseNumber(Numbers.One);
             return;
         }
         if (command.equals("two")) {
-            model.changeNum(2);
+            choseNumber(Numbers.Two);
             return;
         }
         if (command.equals("three")) {
-            model.changeNum(3);
+            choseNumber(Numbers.Three);
             return;
         }
         if (command.equals("four")) {
-            model.changeNum(4);
+            choseNumber(Numbers.Four);
             return;
         }
         if (command.equals("five")) {
-            model.changeNum(5);
+            choseNumber(Numbers.Five);
             return;
         }
         if (command.equals("six")) {
-            model.changeNum(6);
+            choseNumber(Numbers.Six);
             return;
         }
         if (command.equals("seven")) {
-            model.changeNum(7);
+            choseNumber(Numbers.Seven);
             return;
         }
         if (command.equals("eight")) {
-            model.changeNum(8);
+            choseNumber(Numbers.Eight);
             return;
         }
         if (command.equals("nine")) {
-            model.changeNum(9);
+            choseNumber(Numbers.Nine);
             return;
-        }
-
-
-        if (command.equals("start")) {
-            model.startGame(null);
-            return;
-        }
-        if (command.equals("Quit")) {
-            System.exit(0);
         }
 
         // Board Button Interactions
-        int x = Integer.parseInt(command.substring(0, 1));
-        int y = Integer.parseInt(command.substring(2, 3));
-        if ((x >= 0 && x < 9) && (y >= 0 && x < 9)) {
-            model.selectBoard(x, y);
-            model.gui.updateBoard();
-        }
-    }
-
-    public void addObserver(Observer observer) {
-        model.registerObserver(observer);
-    }
-
-    public void addBObserver(BoardObserver observer) {
-        model.registerBObserver(observer);
-    }
-
-    public GameBoard getBoard() {
-        return model.getBoard();
-    }
-
-    public void addValid(ValidGUI validGui) {
-        model.setValid(validGui);
+//        int x = Integer.parseInt(command.substring(0, 1));
+//        int y = Integer.parseInt(command.substring(2, 3));
+//        if ((x >= 0 && x < 9) && (y >= 0 && x < 9)) {
+//            model.selectBoard(x, y);
+//            model.gui.updateBoard();
+//        }
     }
 
     public void addBtnObserver(NumberBtnObserver btnObserver, int row, int col) {
         this.model.registerNumberObserver(btnObserver, row, col);
     }
 
-    public void loadBoard(){
+    public void loadBoard() {
         this.model.loadBoard();
+    }
+
+    public void setMsgObserver(MsgObserver observer) {
+        this.model.setMsgObserver(observer);
+    }
+
+    private void choseNumber(Numbers num) {
+        currentNumber = num;
+        isUsingHint = false;
+        model.choseNumber(num);
     }
 }

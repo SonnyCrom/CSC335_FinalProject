@@ -14,8 +14,4 @@ public class NumbersGUI extends JLabel implements Observer{
 	public void newNumber(int num) {
 		this.setText("Current number: " + Integer.toString(num));
 	}
-	
-	public void newNumber(Numbers num) {
-		this.setText("Current number: " + Integer.toString(num.toInteger()));
-	}
 }

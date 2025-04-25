@@ -3,31 +3,19 @@ package view;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.ModuleLayer.Controller;
 import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.NumRep;
-import model.Numbers;
 import model.Difficulty;
-import model.GameBoard;
-import model.Model;
-import model.NumRep;
 import controller.SudokuController;
 
 public class SudokuGUI extends JFrame {
 
-    private NumRep gridRep;
-    private NumbersGUI numRep;
-    private ValidGUI validGui;
     private JPanel panel;
-    private SudokuController controller;
+    private final SudokuController controller;
     private final int SIZE = 9;
 
     private final HashMap<Integer, HashMap<Integer, Color>> colorMap = new HashMap<>() {
@@ -57,8 +45,8 @@ public class SudokuGUI extends JFrame {
     };
 
 
-    public SudokuGUI(Model model) {
-        this.controller = new SudokuController(model);
+    public SudokuGUI(Difficulty difficulty) {
+        this.controller = new SudokuController(difficulty);
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
         this.setMinimumSize(new Dimension(600, 700));
@@ -66,14 +54,22 @@ public class SudokuGUI extends JFrame {
         this.controller.loadBoard();
     }
 
+    public SudokuGUI() {
+        this.controller = new SudokuController();
+        this.setTitle("Sudoku!");
+        this.setSize(600, 700);
+        this.setMinimumSize(new Dimension(600, 700));
+        this.setUp();
+        this.controller.loadBoard();
+    }
+
+
     private void setUp() {
         addGameBoard();
-        numRep = new NumbersGUI();
-        validGui = new ValidGUI();
-        controller.addObserver(numRep);
-        this.add(validGui, BorderLayout.EAST);
-        controller.addValid(validGui);
-        this.add(numRep);
+        MsgLabel msgLabel = new MsgLabel();
+        controller.setMsgObserver(msgLabel);
+        this.add(msgLabel);
+
         //
 
         //setting up the main panel

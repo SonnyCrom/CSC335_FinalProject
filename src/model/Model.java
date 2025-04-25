@@ -21,34 +21,25 @@ public class Model {
     private DbConnector db;
     private HashMap<Integer, HashMap<Integer, NumberBtnObserver>> numberObservers;
 
-    public Model() {
-        this.observers = new ArrayList<Observer>();
-        this.bObservers = new ArrayList<BoardObserver>();
-        this.board = new GameBoard(Difficulty.EASY);
-        this.gui = new SudokuGUI(this);
-        this.controller = new SudokuController(this);
-        this.db = new DbConnector();
-        this.numberObservers = new HashMap<>();
+    public Model(Difficulty difficulty) {
+        this.board = new GameBoard(difficulty);
+        setUpModel();
     }
 
-    public Model(boolean isSaved, Difficulty difficulty) {
+    public Model() {
+        try {
+            this.board = db.getSaveGame();
+            setUpModel();
+        } catch (IOException e) {
+            System.err.println("Error: Could not load saved game");
+        }
+    }
+
+    private void setUpModel() {
         this.observers = new ArrayList<Observer>();
         this.bObservers = new ArrayList<BoardObserver>();
         this.numberObservers = new HashMap<>();
         this.db = new DbConnector();
-        if (isSaved) {
-            try {
-                this.board = db.getSaveGame();
-            } catch (IOException e) {
-                this.board = new GameBoard(difficulty);
-                System.err.println("Error: Could not load saved game");
-                e.printStackTrace();
-            }
-        } else {
-            this.board = new GameBoard(difficulty);
-        }
-        this.gui = new SudokuGUI(this);
-        this.controller = new SudokuController(this);
     }
 
     public void selectBoard(int i, int j) {
@@ -61,7 +52,6 @@ public class Model {
         }
 
         board.fillPlace(num.fromInteger(this.number), this.x, this.y);
-        //board.addNumber(num.fromInteger(this.number), this.x, this.y);
         notifyBObservers();
         if (board.getValueAt(this.x, this.y) == Numbers.Empty) {
             this.valid.isValidMove(1); //
