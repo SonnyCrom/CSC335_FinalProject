@@ -2,6 +2,8 @@ package model;
 
 import view.EndGameObserver;
 import view.MsgObserver;
+import view.TimerLabel;
+import view.TimerObserver;
 import view.BtnObserver;
 
 import java.io.IOException;
@@ -16,6 +18,7 @@ public class SudokuModel {
     private BtnObserver hintObserver;
     private EndGameObserver endGameObserver;
     private boolean isChoosingHint;
+    private TimerObserver timerObserver;
 
     public SudokuModel(Difficulty difficulty) {
         setUpModel();
@@ -120,4 +123,25 @@ public class SudokuModel {
             endGameObserver.handleEndGame();
         }
     }
+    
+    public void incrementTimer() {
+    	if(!board.gameOver()) {
+        	this.board.incSecs();
+        	db.updateGameSave(board);
+        	notifyTimer();
+    	}
+    }
+
+	private void notifyTimer() {
+		this.timerObserver.newTime(this.board.getSeconds());
+	}
+
+	public void registerTimer(TimerObserver observer) {
+		this.timerObserver = observer;
+	}
+	
+	public int getInitSeconds() {
+		return board.getSeconds();
+	}
+	
 }

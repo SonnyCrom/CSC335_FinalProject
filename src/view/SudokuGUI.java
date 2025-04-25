@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import controller.SudokuController;
 
 public class SudokuGUI extends JFrame implements EndGameObserver {
 
+	private TimerLabel timerLabel;
     private final SudokuController controller;
     private final int SIZE = 9;
 
@@ -46,7 +49,7 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         this.controller = new SudokuController(difficulty);
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }
@@ -55,7 +58,7 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         this.controller = new SudokuController();
         this.setTitle("Sudoku!");
         this.setSize(600, 700);
-        this.setMinimumSize(new Dimension(600, 700));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setUp();
         this.controller.loadBoard();
     }
@@ -139,6 +142,11 @@ public class SudokuGUI extends JFrame implements EndGameObserver {
         hint.addActionListener(controller);
         controller.setHintObserver(hint);
         mainPanel.add(hint);
+        
+        timerLabel = new TimerLabel(controller.getInitialSeconds());
+        mainPanel.add(timerLabel);
+        mainPanel.add(timerLabel);
+        controller.addTimerObserver(timerLabel);
 
 
         //adding a window listener for closing the app

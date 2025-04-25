@@ -55,6 +55,7 @@ class BoardTests {
 	
 	@Test
 	void testGameOver() {
+		assertFalse(hardBoard.gameOver());
 		for(int i = 0; i < 9; i++) {
 			for(int j = 0; j < 9; j++) {
 				hardBoard.useHintAt(i, j);
@@ -75,5 +76,12 @@ class BoardTests {
 				
 			}
 		}
+	}
+	
+	@Test
+	void testTimer() {
+		assertEquals(hardBoard.getSeconds(), 0);
+		hardBoard.incSecs();
+		assertEquals(hardBoard.getSeconds(), 1);
 	}
 }
