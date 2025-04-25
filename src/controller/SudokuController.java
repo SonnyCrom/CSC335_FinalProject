@@ -7,6 +7,7 @@ import model.GameBoard;
 import model.Model;
 import view.BoardObserver;
 import view.Observer;
+import view.ValidGUI;
 
 public class SudokuController implements ActionListener {
 	private Model model;
@@ -73,7 +74,7 @@ public class SudokuController implements ActionListener {
 		int y = Integer.parseInt(command.substring(2, 3));
 		if ((x >= 0 && x <9) && (y>= 0 && x <9)) {
 			model.selectBoard(x, y);
-			
+			model.gui.updateBoard();
 		}
 	}
 	
@@ -85,5 +86,9 @@ public class SudokuController implements ActionListener {
 	}
 	public GameBoard getBoard() {
 		return model.getBoard();
+	}
+
+	public void addValid(ValidGUI validGui) {
+		model.setValid(validGui);
 	}
 }

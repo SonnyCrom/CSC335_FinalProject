@@ -6,6 +6,7 @@ import controller.SudokuController;
 import view.BoardObserver;
 import view.Observer;
 import view.SudokuGUI;
+import view.ValidGUI;
 
 public class Model {
 
@@ -15,8 +16,9 @@ public class Model {
 	private GameBoard board;
 	private ArrayList<Observer> observers;
 	private ArrayList<BoardObserver> bObservers;
-	private SudokuGUI gui;
+	public SudokuGUI gui;
 	private SudokuController controller;
+	private ValidGUI valid;
 	
 	public Model() {
 		this.observers = new ArrayList<Observer>();
@@ -30,16 +32,19 @@ public class Model {
 		this.x = i;
 		this.y = j;
 		Numbers num = Numbers.Empty;
-
+		if (!board.getChangeAt(this.x, this.y)) {
+			this.valid.isValidMove(2);
+			return;
+		}
+		
 		board.fillPlace(num.fromInteger(this.number), this.x, this.y);
 		//board.addNumber(num.fromInteger(this.number), this.x, this.y);
-		gui.updateBoard();
-		if (board.getValueAt(this.x, this.y) == Numbers.Empty) {
-			System.out.println("Invlaid Move");
-		} else {
-			System.out.println("Added: " + board.getValueAt(this.x, this.y).toInteger());
-		}
 		notifyBObservers();
+		if (board.getValueAt(this.x, this.y) == Numbers.Empty) {
+			this.valid.isValidMove(1);
+		} else {
+			this.valid.isValidMove(0);
+		}
 	}
 
 	public void changeNum(int i) {
@@ -89,4 +94,9 @@ public class Model {
 
 	public void quitGame(Observer observer) {
 	}
+
+	public void setValid(ValidGUI validGui) {
+		this.valid = validGui;
+	}
+	
 }

@@ -38,10 +38,22 @@ public class GameBoard {
 
         fillBoard();
         setBoardForPlay();
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+            	board[i][j].setCanChange(false);
+                if (board[i][j].getVal() == Numbers.Empty){
+                	board[i][j].setCanChange(true);
+                }
+            }
+        }
     }
 
     public Numbers getValueAt(int row, int col) {
         return board[row][col].getVal();
+    }
+    
+    public boolean getChangeAt(int row, int col) {
+        return board[row][col].canChange();
     }
 
     public boolean fillPlace(Numbers n, int row, int col) {
@@ -76,11 +88,13 @@ public class GameBoard {
             if (!this.board[row][col].getVal().equals(Numbers.Empty)) {
                 Numbers originalVal = this.board[row][col].getVal();
                 this.board[row][col].setVal(Numbers.Empty);
+                /////this.board[row][col].setCanChange(true);
 
                 // we want to make sure that there is only one unique solution to the board, so if there are more, we're
                 // adding back the original to the board and mark down a failed attempt
                 if (this.copy().countSolutions() != 1) {
                     this.board[row][col].setVal(originalVal);
+                    ////this.board[row][col].setCanChange(false);
                     attemts--;
                 } else {
                     countRemoved++;

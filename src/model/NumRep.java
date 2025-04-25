@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 
 import view.BoardObserver;
 
+// TESTING Purpose --> Shows where in grid clicked
+
 public class NumRep extends JLabel implements BoardObserver {
 	
 	private JPanel panel;

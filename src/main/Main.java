@@ -31,12 +31,13 @@ public class Main {
             GameBoard g = new GameBoard(Difficulty.HARD);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                    Numbers val = g.getValueAt(i, j);
-                    if (val == Numbers.Empty) {
-                        System.out.print("X|");
-                    } else {
-                        System.out.print(val.ordinal() + 1 + "|");
-                    }
+                	System.out.print(g.getChangeAt(i, j) + " ");
+//                    Numbers val = g.getValueAt(i, j);
+//                    if (val == Numbers.Empty) {
+//                        System.out.print("X|");
+//                    } else {
+//                        System.out.print(val.ordinal() + 1 + "|");
+//                    }
                 }
                 System.out.println();
                 System.out.println("------------------");

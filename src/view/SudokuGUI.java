@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import model.NumRep;
 import model.Numbers;
+import model.Difficulty;
 import model.GameBoard;
 import model.Model;
 import model.NumRep;
@@ -25,6 +26,7 @@ public class SudokuGUI extends JFrame{
 
 	private NumRep gridRep;
 	private NumbersGUI numRep;
+	private ValidGUI validGui;
 	private JPanel panel; 
 	private SudokuController controller;
 	private int SIZE = 9;
@@ -46,12 +48,15 @@ public class SudokuGUI extends JFrame{
 	private void setUp() {
 		updateBoard();
 		// Testing Lines
-		gridRep = new NumRep();
+		//gridRep = new NumRep();
 		numRep = new NumbersGUI();
+		validGui = new ValidGUI();
 		//this.add(numRep);
 		controller.addObserver(numRep);
-		this.add(gridRep);
-		controller.addBObserver(gridRep);
+		//this.add(gridRep, BorderLayout.EAST);
+		//controller.addBObserver(gridRep);
+		this.add(validGui, BorderLayout.EAST);
+		controller.addValid(validGui);
 		this.add(numRep);
 		//
 		
@@ -135,17 +140,16 @@ public class SudokuGUI extends JFrame{
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				JButton TEST = new JButton(" ");
+				TEST.setActionCommand(Integer.toString(i) + " " + Integer.toString(j));
+				TEST.addActionListener(controller);
+				boardPanel.add(TEST);
 				Numbers num = controller.getBoard().getValueAt(i, j);
 				if (num == Numbers.Empty) {
 					TEST.setText(" ");
 				} else {
 					TEST.setText(Integer.toString(num.toInteger()));
 				}
-				TEST.setActionCommand(Integer.toString(i) + " " + Integer.toString(j));
-				TEST.addActionListener(controller);
-				boardPanel.add(TEST);
 			}
 		}
-		
 	}
 }
