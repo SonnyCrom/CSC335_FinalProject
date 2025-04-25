@@ -64,6 +64,13 @@ public class SudokuController implements ActionListener {
             model.choseHint();
             return;
         }
+
+        if (command.startsWith("Cell")) {
+            String[] commandSplit = command.split(" ");
+            int row = Integer.parseInt(commandSplit[1]);
+            int col = Integer.parseInt(commandSplit[2]);
+            cellClick(row, col);
+        }
     }
 
     public void addBtnObserver(NumberBtnObserver btnObserver, int row, int col) {
@@ -77,5 +84,10 @@ public class SudokuController implements ActionListener {
     public void setMsgObserver(MsgObserver observer) {
         this.model.setMsgObserver(observer);
         model.choseNumber(Numbers.Empty);
+    }
+
+    private void cellClick(int row, int col) {
+        System.out.println(row);
+        System.out.println(col);
     }
 }

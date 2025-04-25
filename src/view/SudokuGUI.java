@@ -159,7 +159,7 @@ public class SudokuGUI extends JFrame {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 NumberBtn btn = new NumberBtn(colorMap.get(i/3).get(j/3));
-                btn.setActionCommand(" " + Integer.toString(i) + " " + Integer.toString(j));
+                btn.setActionCommand("Cell " + Integer.toString(i) + " " + Integer.toString(j));
                 btn.addActionListener(controller);
                 controller.addBtnObserver(btn, i, j);
                 boardPanel.add(btn);
