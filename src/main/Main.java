@@ -1,10 +1,14 @@
 package main;
+
+import model.DbConnector;
 import model.Difficulty;
 import model.GameBoard;
 import model.Model;
 import model.Numbers;
 import view.StartScreen;
 import view.SudokuGUI;
+
+import java.io.IOException;
 
 public class Main {
 
@@ -23,11 +27,6 @@ public class Main {
 //                {Numbers.Seven, Numbers.Three, Numbers.Six, Numbers.Four, Numbers.Nine, Numbers.Two, Numbers.One, Numbers.Five, Numbers.Eight}
 //        };
     	
-		//StartScreen view = new StartScreen();
-    	Model model = new Model();
-    	//SudokuGUI gameView = new SudokuGUI(model);
-    	
-    	
         for (int k = 0; k <0; k++) {
             GameBoard g = new GameBoard(Difficulty.HARD);
             for (int i = 0; i < 9; i++) {
@@ -43,7 +42,10 @@ public class Main {
                 System.out.println("------------------");
             }
         }
-
+        
+        
+        //StartScreen view = new StartScreen();
+        // This is what you should call to open gameboard \/
+        Model model = new Model();
     }
 }
-
