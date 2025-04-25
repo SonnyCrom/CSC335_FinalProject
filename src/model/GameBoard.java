@@ -43,6 +43,10 @@ public class GameBoard{
     public Numbers getValueAt(int row, int col) {
         return board[row][col].getVal();
     }
+    
+    public GameBoardCell getCellAt(int row, int col) {  
+    	return new GameBoardCell(board[row][col].getVal(), board[row][col].canChange(), row, col);
+    }
 
     public boolean fillPlace(Numbers n, int row, int col) {
         if (board[row][col].canChange() &&
@@ -167,7 +171,7 @@ public class GameBoard{
         return false;
     }
 
-    private boolean isValidPlacement(Numbers n, int row, int col) {
+    public boolean isValidPlacement(Numbers n, int row, int col) {
         return !isNumberInBox(n, row, col) && !isNumberInRow(n, row) && !isNumberInCol(n, col);
     }
 
@@ -200,9 +204,9 @@ public class GameBoard{
         return count;
     }
     
-    private GameBoard solve() {
+    public GameBoard solve() {
     	GameBoard solution = this.copy();
-    	if(solution.solveHelper(0, 0)) {
+    	if(solution.solveHelper(solution, 0, 0)) {
     		return solution;
     	}
     	else {
@@ -210,23 +214,23 @@ public class GameBoard{
     	}
     }
     
-    private boolean solveHelper(int row, int col) {
+    private boolean solveHelper(GameBoard board, int row, int col) {
     	if(row == SIZE)
     		return true;
         int nextRow = (col == SIZE - 1) ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
-        if (!board[row][col].getVal().equals(Numbers.Empty)) {
-            return solveHelper(nextRow, nextCol);
+        if (!board.getValueAt(row, col).equals(Numbers.Empty)) {
+            return solveHelper(board, nextRow, nextCol);
         }
         
         for(int n = 0; n < Numbers.values().length - 1; n++) {
         	Numbers numEnum = Numbers.values()[n];
         	if(isValidPlacement(numEnum, row, col)) {
-        		board[row][col].setVal(numEnum);
-        		if(solveHelper(nextRow, nextCol)) {
+        		board.addNumber(numEnum, row, col);
+        		if(solveHelper(board, nextRow, nextCol)) {
         			return true;
         		}
-        		board[row][col].setVal(Numbers.Empty);
+        		board.addNumber(Numbers.Empty, row, col);
         	}
         }
         
@@ -261,24 +265,16 @@ public class GameBoard{
     	}
     }
     
-    public HashSet<GameBoardCell> conflictingCells(){
-    	GameBoard solution = this.solve();
-    	HashSet<GameBoardCell> conflicts = new HashSet<GameBoardCell>();
-    	for(int i = 0; i < SIZE; i++) {
-    		for(int j = 0; j < SIZE; j++) {
-    			if(!board[i][j].equals(solution.getValueAt(i,j))) {
-    				conflicts.add(board[i][j].copy());
-    			}
-    		}
-    	}
-    	return conflicts;
-    }
-    
     public boolean gameOver() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-            	if(!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty))
+            	Numbers temp = this.getValueAt(i, j);
+            	if(board[i][j].getVal().equals(Numbers.Empty))
             		return false;
+            	this.removeNumber(i, j);
+            	if(!isValidPlacement(temp, i, j))
+            		return false;
+            	this.addNumber(temp, i, j);
             }
         }
     	return true;
