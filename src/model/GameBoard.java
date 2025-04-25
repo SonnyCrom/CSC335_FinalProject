@@ -32,12 +32,13 @@ public class GameBoard {
         this.difficulty = difficulty;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                board[i][j] = new GameBoardCell(Numbers.Empty, true, i, j);
+                board[i][j] = new GameBoardCell(Numbers.Empty, true);
             }
         }
 
         fillBoard();
         setBoardForPlay();
+        lockNumbersAfterInit();
     }
 
     public Numbers getValueAt(int row, int col) {
@@ -89,6 +90,18 @@ public class GameBoard {
         }
     }
 
+    private void lockNumbersAfterInit() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (!board[i][j].getVal().equals(Numbers.Empty)) {
+                    board[i][j].setCanChange(true);
+                } else {
+                    board[i][j].setCanChange(false);
+                }
+            }
+        }
+    }
+
     private List<int[]> getAllCells() {
         List<int[]> cells = new ArrayList<>();
 
@@ -122,12 +135,14 @@ public class GameBoard {
                 for (Numbers n : numsList) {
                     if (!n.equals(Numbers.Empty) && isValidPlacement(n, cell[0], cell[1])) {
                         this.board[cell[0]][cell[1]].setVal(n);
+                        this.board[cell[0]][cell[1]].setCorrectVal(n);
                         if (isBoardFull() || fillBoard()) {
                             return true;
                         }
                     }
                 }
                 this.board[cell[0]][cell[1]].setVal(Numbers.Empty);
+                this.board[cell[0]][cell[1]].setCorrectVal(Numbers.Empty);
                 break;
             }
         }
@@ -260,23 +275,11 @@ public class GameBoard {
         }
     }
 
-    public HashSet<GameBoardCell> conflictingCells() {
-        GameBoard solution = this.solve();
-        HashSet<GameBoardCell> conflicts = new HashSet<GameBoardCell>();
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (!board[i][j].equals(solution.getValueAt(i, j))) {
-                    conflicts.add(board[i][j].copy());
-                }
-            }
-        }
-        return conflicts;
-    }
 
     public boolean gameOver() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (!isValidPlacement(board[i][j].getVal(), i, j) || board[i][j].getVal().equals(Numbers.Empty))
+                if (board[i][j].getVal().equals(Numbers.Empty))
                     return false;
             }
         }
