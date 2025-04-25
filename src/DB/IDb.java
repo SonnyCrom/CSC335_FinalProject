@@ -2,7 +2,6 @@ package DB;
 
 import model.GameBoard;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface IDb {
