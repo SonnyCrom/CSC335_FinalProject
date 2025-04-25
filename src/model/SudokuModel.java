@@ -18,28 +18,23 @@ public class SudokuModel {
     private boolean isChosingHint;
 
     public SudokuModel(Difficulty difficulty) {
-        this.board = new GameBoard(difficulty);
-        this.db = new DbConnector();
-        this.db.saveNewGameSave(this.board);
         setUpModel();
+        this.board = new GameBoard(difficulty);
+        this.db.saveNewGameSave(this.board);
     }
 
     public SudokuModel() {
+        setUpModel();
         try {
             this.board = db.getSaveGame();
-            setUpModel();
         } catch (IOException e) {
             System.err.println("Error: Could not load saved game");
         }
     }
 
     private void setUpModel() {
-//        this.observers = new ArrayList<Observer>();
-//        this.bObservers = new ArrayList<BoardObserver>();
         this.numberObservers = new HashMap<>();
-        if (db == null) {
-            this.db = new DbConnector();
-        }
+        this.db = new DbConnector();
         this.selectedNumber = Numbers.Empty;
     }
 

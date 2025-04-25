@@ -25,7 +25,7 @@ public class MsgLabel extends JLabel implements MsgObserver {
     }
 
     public void incorrect(int num) {
-        this.setText("Incorrect!\nCurrent number: " + Integer.toString(num));
+        this.setText("Incorrect! Current number: " + Integer.toString(num));
     }
 
 }
