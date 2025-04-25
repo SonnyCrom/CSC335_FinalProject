@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface IDb {
-    public void saveGame(GameBoard gameBoard);
+    void saveGame(GameBoard gameBoard);
 
-    public void deleteGame();
+    void deleteGame();
 
-    public boolean isGameExist();
+    boolean isGameExist();
 
-    public GameBoard getSaveGame() throws IOException;
+    GameBoard getSaveGame() throws IOException;
 }
