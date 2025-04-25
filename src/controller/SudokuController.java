@@ -7,7 +7,7 @@ import model.*;
 import view.*;
 
 public class SudokuController implements ActionListener {
-    private SudokuModel model;
+    private final SudokuModel model;
 
     public SudokuController(Difficulty difficulty) {
         this.model = new SudokuModel(difficulty);

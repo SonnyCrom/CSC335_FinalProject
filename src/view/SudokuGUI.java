@@ -14,27 +14,26 @@ import controller.SudokuController;
 
 public class SudokuGUI extends JFrame {
 
-    private JPanel panel;
     private final SudokuController controller;
     private final int SIZE = 9;
 
     private final HashMap<Integer, HashMap<Integer, Color>> colorMap = new HashMap<>() {
         {
-            put(0, new HashMap<Integer, Color>() {
+            put(0, new HashMap<>() {
                 {
                     put(0, Color.green);
                     put(1, new Color(255, 128, 128));
                     put(2, Color.cyan);
                 }
             });
-            put(1, new HashMap<Integer, Color>() {
+            put(1, new HashMap<>() {
                 {
                     put(0, new Color(255, 128, 255));
                     put(1, Color.yellow);
                     put(2, Color.lightGray);
                 }
             });
-            put(2, new HashMap<Integer, Color>(){
+            put(2, new HashMap<>() {
                 {
                     put(0, Color.pink);
                     put(1, Color.gray);
@@ -159,33 +158,12 @@ public class SudokuGUI extends JFrame {
         this.add(boardPanel, BorderLayout.NORTH);
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                NumberBtn btn = new NumberBtn(colorMap.get(i/3).get(j/3));
-                btn.setActionCommand("Cell " + Integer.toString(i) + " " + Integer.toString(j));
+                NumberBtn btn = new NumberBtn(colorMap.get(i / 3).get(j / 3));
+                btn.setActionCommand("Cell " + i + " " + j);
                 btn.addActionListener(controller);
                 controller.addBtnObserver(btn, i, j);
                 boardPanel.add(btn);
             }
         }
-    }
-
-    public void updateBoard() {
-//        JPanel boardPanel = new JPanel();
-//        boardPanel.setLayout(new GridLayout(SIZE, SIZE, 10, 10));
-//        this.add(boardPanel, BorderLayout.NORTH);
-//        for (int i = 0; i < SIZE; i++) {
-//            for (int j = 0; j < SIZE; j++) {
-//                JButton TEST = new JButton(" ");
-//                TEST.setActionCommand(Integer.toString(i) + " " + Integer.toString(j));
-//                TEST.addActionListener(controller);
-//                boardPanel.add(TEST);
-//                Numbers num = controller.getBoard().getValueAt(i, j);
-//                if (num == Numbers.Empty) {
-//                    TEST.setText(" ");
-//                } else {
-//                    TEST.setText(Integer.toString(num.toInteger()));
-//                }
-//            }
-//        }
-
     }
 }

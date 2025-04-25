@@ -12,7 +12,7 @@ public class MsgLabel extends JLabel implements MsgObserver {
         if (num == 0) {
             this.setText("Current number: empty");
         } else {
-            this.setText("Current number: " + Integer.toString(num));
+            this.setText("Current number: " + num);
         }
     }
 
@@ -25,7 +25,11 @@ public class MsgLabel extends JLabel implements MsgObserver {
     }
 
     public void incorrect(int num) {
-        this.setText("Incorrect! Current number: " + Integer.toString(num));
+        if (num == 0) {
+            this.setText("Incorrect! Current number: empty");
+        } else {
+            this.setText("Incorrect! Current number: " + num);
+        }
     }
 
 }

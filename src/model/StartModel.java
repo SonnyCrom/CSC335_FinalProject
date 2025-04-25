@@ -3,7 +3,7 @@ package model;
 import javax.swing.*;
 
 public class StartModel {
-    private DbConnector db;
+    private final DbConnector db;
 
     public StartModel(){
         db = new DbConnector();

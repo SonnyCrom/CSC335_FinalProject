@@ -35,7 +35,7 @@ public class StartScreen extends JFrame {
         this.controller = new StartController();
         setLayout(new BorderLayout());
 
-        Font font = null;
+        Font font;
 
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/FranklinGothic.ttf"));

@@ -1,6 +1,5 @@
 package model;
 
-import view.HintBtn;
 import view.MsgObserver;
 import view.BtnObserver;
 
@@ -14,7 +13,7 @@ public class SudokuModel {
     private HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
     private MsgObserver msgObserver;
     private BtnObserver hintObserver;
-    private boolean isChosingHint;
+    private boolean isChoosingHint;
 
     public SudokuModel(Difficulty difficulty) {
         setUpModel();
@@ -74,17 +73,17 @@ public class SudokuModel {
 
     public void choseNumber(Numbers num) {
         selectedNumber = num;
-        isChosingHint = false;
+        isChoosingHint = false;
         msgObserver.newNumber(num.toInteger());
     }
 
     public void choseHint() {
-        isChosingHint = true;
+        isChoosingHint = true;
         msgObserver.hint(true);
     }
 
     public void updateCell(int row, int col) {
-        if (!isChosingHint) {
+        if (!isChoosingHint) {
             boolean fillResult = this.board.fillPlace(selectedNumber, row, col);
             if (fillResult) {
                 numberObservers.get(row).get(col).setText(selectedNumber.toInteger());
@@ -99,7 +98,7 @@ public class SudokuModel {
             db.updateGameSave(board);
             updateHintsBtn();
             if (board.getHints() <= 0) {
-                isChosingHint = false;
+                isChoosingHint = false;
                 selectedNumber = Numbers.Empty;
                 msgObserver.newNumber(selectedNumber.toInteger());
             }
