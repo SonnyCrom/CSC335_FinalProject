@@ -1,11 +1,12 @@
 package DB;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.GameBoard;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 
 public class DbJson implements IDb {
     private final Gson gson;
@@ -34,5 +35,13 @@ public class DbJson implements IDb {
     public boolean isGameExist() {
         File dataFile = new File(file_path);
         return dataFile.exists();
+    }
+
+    @Override
+    public GameBoard getSaveGame() throws IOException {
+        Reader reader = new FileReader(file_path);
+        GameBoard gameBoard = gson.fromJson(reader, GameBoard.class);
+        reader.close();
+        return gameBoard;
     }
 }
