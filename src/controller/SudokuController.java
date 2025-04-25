@@ -73,7 +73,7 @@ public class SudokuController implements ActionListener {
         }
     }
 
-    public void addBtnObserver(NumberBtnObserver btnObserver, int row, int col) {
+    public void addBtnObserver(BtnObserver btnObserver, int row, int col) {
         this.model.registerNumberObserver(btnObserver, row, col);
     }
 
@@ -84,6 +84,10 @@ public class SudokuController implements ActionListener {
     public void setMsgObserver(MsgObserver observer) {
         this.model.setMsgObserver(observer);
         model.choseNumber(Numbers.Empty);
+    }
+
+    public void setHintObserver(BtnObserver observer) {
+        this.model.setHintObserver(observer);
     }
 
     private void cellClick(int row, int col) {

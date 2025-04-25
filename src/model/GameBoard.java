@@ -24,8 +24,14 @@ public class GameBoard {
         put(Difficulty.HARD, SIZE * SIZE);
     }};
 
+    private static final HashMap<Difficulty, Integer> HINTS = new HashMap<>() {{
+        put(Difficulty.EASY, 5);
+        put(Difficulty.HARD, 2);
+    }};
+
     private final GameBoardCell[][] board;
     private final Difficulty difficulty;
+    private int hints;
 
     public GameBoard(Difficulty difficulty) {
         board = new GameBoardCell[SIZE][SIZE];
@@ -35,6 +41,7 @@ public class GameBoard {
                 board[i][j] = new GameBoardCell(Numbers.Empty, true);
             }
         }
+        hints = HINTS.get(difficulty);
 
         fillBoard();
         setBoardForPlay();
@@ -49,7 +56,12 @@ public class GameBoard {
         return board[row][col].canChange();
     }
 
+    public int getHints(){
+        return hints;
+    }
+
     public Numbers useHintAt(int row, int col) {
+        hints--;
         Numbers correctNum = board[row][col].getCorrectVal();
         fillPlace(correctNum, row, col);
         return correctNum;

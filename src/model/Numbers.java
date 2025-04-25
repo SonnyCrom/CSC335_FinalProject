@@ -12,7 +12,7 @@ public enum Numbers {
             return this.ordinal() + 1;
     }
 
-    public Numbers fromInteger(int i) {
+    public static Numbers fromInteger(int i) {
         if (i == 1)
             return One;
         if (i == 2)

@@ -1,20 +1,19 @@
 package model;
 
-import view.BoardObserver;
+import view.HintBtn;
 import view.MsgObserver;
-import view.NumberBtnObserver;
-import view.Observer;
+import view.BtnObserver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SudokuModel {
     private GameBoard board;
     private Numbers selectedNumber;
     private DbConnector db;
-    private HashMap<Integer, HashMap<Integer, NumberBtnObserver>> numberObservers;
+    private HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
     private MsgObserver msgObserver;
+    private BtnObserver hintObserver;
     private boolean isChosingHint;
 
     public SudokuModel(Difficulty difficulty) {
@@ -41,7 +40,7 @@ public class SudokuModel {
     public void loadBoard() {
         for (int row : this.numberObservers.keySet()) {
             for (int col : this.numberObservers.get(row).keySet()) {
-                this.numberObservers.get(row).get(col).setText(board.getValueAt(row, col));
+                this.numberObservers.get(row).get(col).setText(board.getValueAt(row, col).toInteger());
                 if (!board.getChangeAt(row, col)) {
                     this.numberObservers.get(row).get(col).setDisable();
                 }
@@ -53,7 +52,20 @@ public class SudokuModel {
         msgObserver = observer;
     }
 
-    public void registerNumberObserver(NumberBtnObserver observer, int row, int col) {
+    public void setHintObserver(BtnObserver observer) {
+        hintObserver = observer;
+        updateHintsBtn();
+    }
+
+    public void updateHintsBtn() {
+        int hints = board.getHints();
+        hintObserver.setText(hints);
+        if (hints <= 0) {
+            hintObserver.setDisable();
+        }
+    }
+
+    public void registerNumberObserver(BtnObserver observer, int row, int col) {
         if (!this.numberObservers.containsKey(row)) {
             this.numberObservers.put(row, new HashMap<>());
         }
@@ -75,7 +87,7 @@ public class SudokuModel {
         if (!isChosingHint) {
             boolean fillResult = this.board.fillPlace(selectedNumber, row, col);
             if (fillResult) {
-                numberObservers.get(row).get(col).setText(selectedNumber);
+                numberObservers.get(row).get(col).setText(selectedNumber.toInteger());
                 msgObserver.newNumber(selectedNumber.toInteger());
                 db.updateGameSave(board);
             } else {
@@ -83,8 +95,14 @@ public class SudokuModel {
             }
         } else {
             Numbers correctNum = board.useHintAt(row, col);
-            numberObservers.get(row).get(col).setText(correctNum);
+            numberObservers.get(row).get(col).setText(correctNum.toInteger());
             db.updateGameSave(board);
+            updateHintsBtn();
+            if (board.getHints() <= 0) {
+                isChosingHint = false;
+                selectedNumber = Numbers.Empty;
+                msgObserver.newNumber(selectedNumber.toInteger());
+            }
         }
     }
 }

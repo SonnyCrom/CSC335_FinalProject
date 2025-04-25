@@ -137,9 +137,10 @@ public class SudokuGUI extends JFrame {
         mainPanel.add(nine);
 
         //
-        JButton hint = new JButton("hint");
+        HintBtn hint = new HintBtn();
         hint.setActionCommand("hint");
         hint.addActionListener(controller);
+        controller.setHintObserver(hint);
         mainPanel.add(hint);
 
 
