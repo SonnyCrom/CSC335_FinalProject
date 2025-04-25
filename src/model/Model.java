@@ -29,17 +29,19 @@ public class Model {
 	public void selectBoard(int i, int j) {
 		this.x = i;
 		this.y = j;
+		Numbers num = Numbers.Empty;
 
-		board.fillPlace(Numbers.One, this.x, this.y);
+		board.fillPlace(num.fromInteger(this.number), this.x, this.y);
+		//board.addNumber(num.fromInteger(this.number), this.x, this.y);
 		gui.updateBoard();
-		System.out.println("Updated");
+		if (board.getValueAt(this.x, this.y) == Numbers.Empty) {
+			System.out.println("Invlaid Move");
+		} else {
+			System.out.println("Added: " + board.getValueAt(this.x, this.y).toInteger());
+		}
 		notifyBObservers();
 	}
 
-	public void changeCurrent() {
-		board.fillPlace(Numbers.One, this.x, this.y);
-		notifyBObservers();
-	}
 	public void changeNum(int i) {
 		this.number = i;
 		notifyObservers();	

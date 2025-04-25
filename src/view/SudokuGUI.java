@@ -27,6 +27,7 @@ public class SudokuGUI extends JFrame{
 	private NumbersGUI numRep;
 	private JPanel panel; 
 	private SudokuController controller;
+	private int SIZE = 9;
 	
 //	public SudokuGUI() {
 //		this.controller = new SudokuController(new Model());
@@ -47,11 +48,11 @@ public class SudokuGUI extends JFrame{
 		// Testing Lines
 		gridRep = new NumRep();
 		numRep = new NumbersGUI();
-		this.add(numRep);
+		//this.add(numRep);
 		controller.addObserver(numRep);
 		this.add(gridRep);
 		controller.addBObserver(gridRep);
-		//this.add(numRep);
+		this.add(numRep);
 		//
 		
 		//setting up the main panel
@@ -129,10 +130,10 @@ public class SudokuGUI extends JFrame{
 	
 	public void updateBoard() {
 		JPanel boardPanel = new JPanel();
-		boardPanel.setLayout(new GridLayout(9,9, 10, 10));
+		boardPanel.setLayout(new GridLayout(SIZE,SIZE, 10, 10));
 		this.add(boardPanel, BorderLayout.NORTH);
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
 				JButton TEST = new JButton(" ");
 				Numbers num = controller.getBoard().getValueAt(i, j);
 				if (num == Numbers.Empty) {
