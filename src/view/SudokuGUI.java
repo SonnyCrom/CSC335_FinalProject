@@ -1,9 +1,6 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Panel;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.ModuleLayer.Controller;
@@ -27,24 +24,25 @@ public class SudokuGUI extends JFrame{
 	private NumRep gridRep;
 	private NumbersGUI numRep;
 	private ValidGUI validGui;
-	private JPanel panel; 
+	private JPanel panel;
 	private SudokuController controller;
 	private int SIZE = 9;
-	
+
 //	public SudokuGUI() {
 //		this.controller = new SudokuController(new Model());
 //		this.setTitle("Sudoku!");
 //		this.setSize(500,500);
 //		this.setUp();
 //	}
-	
+
 	public SudokuGUI(Model model) {
 		this.controller = new SudokuController(model);
 		this.setTitle("Sudoku!");
-		this.setSize(500,500);
+		this.setSize(600,500);
+		this.setMinimumSize(new Dimension(600, 500));
 		this.setUp();
 	}
-	
+
 	private void setUp() {
 		updateBoard();
 		// Testing Lines
@@ -59,23 +57,23 @@ public class SudokuGUI extends JFrame{
 		controller.addValid(validGui);
 		this.add(numRep);
 		//
-		
+
 		//setting up the main panel
 		JPanel mainPanel = new JPanel();
 		this.add(mainPanel, BorderLayout.SOUTH);
-		
+
 		//setting up the switch button
 		JButton empty = new JButton("  ");
 		empty.setActionCommand("empty");
 		empty.addActionListener(controller);
 		mainPanel.add(empty);
-		
+
 		//setting up the switch button
 		JButton one = new JButton("1");
 		one.setActionCommand("one");
 		one.addActionListener(controller);
 		mainPanel.add(one);
-		
+
 		//setting up the switch button
 		JButton two = new JButton("2");
 		two.setActionCommand("two");
@@ -87,44 +85,51 @@ public class SudokuGUI extends JFrame{
 		three.setActionCommand("three");
 		three.addActionListener(controller);
 		mainPanel.add(three);
-		
+
 		//setting up the switch button
 		JButton four = new JButton("4");
 		four.setActionCommand("four");
 		four.addActionListener(controller);
 		mainPanel.add(four);
-		
+
 		//setting up the switch button
 		JButton five = new JButton("5");
 		five.setActionCommand("five");
 		five.addActionListener(controller);
 		mainPanel.add(five);
-		
+
 		//setting up the switch button
 		JButton six = new JButton("6");
 		six.setActionCommand("six");
 		six.addActionListener(controller);
 		mainPanel.add(six);
-		
+
 		//setting up the switch button
 		JButton seven = new JButton("7");
 		seven.setActionCommand("seven");
 		seven.addActionListener(controller);
 		mainPanel.add(seven);
-		
+
 		//setting up the switch button
 		JButton eight = new JButton("8");
 		eight.setActionCommand("eight");
 		eight.addActionListener(controller);
 		mainPanel.add(eight);
-		
+
 		//setting up the switch button
 		JButton nine = new JButton("9");
 		nine.setActionCommand("nine");
 		nine.addActionListener(controller);
 		mainPanel.add(nine);
-		
-		//adding a window listener for closing the app
+
+        //
+        JButton hint = new JButton("hint");
+		hint.setActionCommand("hint");
+		hint.addActionListener(controller);
+        mainPanel.add(hint);
+
+
+        //adding a window listener for closing the app
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowEvent) {
 				System.exit(0);
@@ -132,7 +137,7 @@ public class SudokuGUI extends JFrame{
 		});
 		this.setVisible(true);
 	}
-	
+
 	public void updateBoard() {
 		JPanel boardPanel = new JPanel();
 		boardPanel.setLayout(new GridLayout(SIZE,SIZE, 10, 10));
@@ -151,5 +156,6 @@ public class SudokuGUI extends JFrame{
 				}
 			}
 		}
+
 	}
 }
