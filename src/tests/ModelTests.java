@@ -1,10 +1,8 @@
 package tests;
 
-import static org.junit.Assert.assertFalse;
-
-import org.junit.Test;
 
 import model.*;
+import org.junit.jupiter.api.Test;
 import view.BtnObserver;
 import view.StartScreen;
 import view.SudokuGUI;
