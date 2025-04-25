@@ -12,7 +12,7 @@ public class SudokuController implements ActionListener {
 	private Model model;
 
 	public SudokuController(Model model) {
-		this.model = new Model();
+		this.model = model;
 	}
 
 	@Override

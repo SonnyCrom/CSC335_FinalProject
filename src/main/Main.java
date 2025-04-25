@@ -1,6 +1,7 @@
 package main;
 import model.Difficulty;
 import model.GameBoard;
+import model.Model;
 import model.Numbers;
 import view.StartScreen;
 import view.SudokuGUI;
@@ -23,7 +24,8 @@ public class Main {
 //        };
     	
 		//StartScreen view = new StartScreen();
-    	SudokuGUI gameView = new SudokuGUI();
+    	Model model = new Model();
+    	//SudokuGUI gameView = new SudokuGUI(model);
     	
     	
         for (int k = 0; k <0; k++) {

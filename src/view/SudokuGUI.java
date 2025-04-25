@@ -28,8 +28,15 @@ public class SudokuGUI extends JFrame{
 	private JPanel panel; 
 	private SudokuController controller;
 	
-	public SudokuGUI() {
-		this.controller = new SudokuController(new Model());
+//	public SudokuGUI() {
+//		this.controller = new SudokuController(new Model());
+//		this.setTitle("Sudoku!");
+//		this.setSize(500,500);
+//		this.setUp();
+//	}
+	
+	public SudokuGUI(Model model) {
+		this.controller = new SudokuController(model);
 		this.setTitle("Sudoku!");
 		this.setSize(500,500);
 		this.setUp();
@@ -44,7 +51,7 @@ public class SudokuGUI extends JFrame{
 		controller.addObserver(numRep);
 		this.add(gridRep);
 		controller.addBObserver(gridRep);
-		this.add(numRep);
+		//this.add(numRep);
 		//
 		
 		//setting up the main panel

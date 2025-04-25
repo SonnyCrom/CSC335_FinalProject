@@ -2,8 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
+import controller.SudokuController;
 import view.BoardObserver;
 import view.Observer;
+import view.SudokuGUI;
 
 public class Model {
 
@@ -13,11 +15,15 @@ public class Model {
 	private GameBoard board;
 	private ArrayList<Observer> observers;
 	private ArrayList<BoardObserver> bObservers;
+	private SudokuGUI gui;
+	private SudokuController controller;
 	
 	public Model() {
 		this.observers = new ArrayList<Observer>();
 		this.bObservers = new ArrayList<BoardObserver>();
 		this.board = new GameBoard(Difficulty.EASY);
+		this.gui = new SudokuGUI(this);
+		this.controller = new SudokuController(this);
 	}
 	
 	public void selectBoard(int i, int j) {
@@ -25,6 +31,8 @@ public class Model {
 		this.y = j;
 
 		board.fillPlace(Numbers.One, this.x, this.y);
+		gui.updateBoard();
+		System.out.println("Updated");
 		notifyBObservers();
 	}
 
