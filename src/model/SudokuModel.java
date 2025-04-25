@@ -1,5 +1,6 @@
 package model;
 
+import view.EndGameObserver;
 import view.MsgObserver;
 import view.BtnObserver;
 
@@ -13,6 +14,7 @@ public class SudokuModel {
     private HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
     private MsgObserver msgObserver;
     private BtnObserver hintObserver;
+    private EndGameObserver endGameObserver;
     private boolean isChoosingHint;
 
     public SudokuModel(Difficulty difficulty) {
@@ -89,6 +91,7 @@ public class SudokuModel {
                 numberObservers.get(row).get(col).setText(selectedNumber.toInteger());
                 msgObserver.newNumber(selectedNumber.toInteger());
                 db.updateGameSave(board);
+                handleIfGameOver();
             } else {
                 msgObserver.incorrect(selectedNumber.toInteger());
             }
@@ -97,11 +100,24 @@ public class SudokuModel {
             numberObservers.get(row).get(col).setText(correctNum.toInteger());
             db.updateGameSave(board);
             updateHintsBtn();
+            handleIfGameOver();
             if (board.getHints() <= 0) {
                 isChoosingHint = false;
                 selectedNumber = Numbers.Empty;
                 msgObserver.newNumber(selectedNumber.toInteger());
             }
+        }
+    }
+
+    public void setEndGameObserver(EndGameObserver observer) {
+        endGameObserver = observer;
+        handleIfGameOver();
+    }
+
+    public void handleIfGameOver() {
+        if (board.gameOver()) {
+            db.deleteSaveGame();
+            endGameObserver.handleEndGame();
         }
     }
 }

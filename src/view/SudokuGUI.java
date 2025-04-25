@@ -5,14 +5,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import model.Difficulty;
 import controller.SudokuController;
 
-public class SudokuGUI extends JFrame {
+public class SudokuGUI extends JFrame implements EndGameObserver {
 
     private final SudokuController controller;
     private final int SIZE = 9;
@@ -150,6 +148,8 @@ public class SudokuGUI extends JFrame {
             }
         });
         this.setVisible(true);
+
+        controller.setEndGameObserver(this);
     }
 
     private void addGameBoard() {
@@ -165,5 +165,16 @@ public class SudokuGUI extends JFrame {
                 boardPanel.add(btn);
             }
         }
+    }
+
+    @Override
+    public void handleEndGame() {
+        JOptionPane.showMessageDialog(
+                this,
+                "You Won!!! Click ok to go back to main menu",
+                "CONGRATULATIONS",
+                JOptionPane.PLAIN_MESSAGE);
+        new StartScreen();
+        this.dispose();
     }
 }
