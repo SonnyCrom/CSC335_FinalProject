@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.Gson;
 
+import view.TimerObserver;
 
 import java.util.*;
 
@@ -13,6 +14,8 @@ import java.util.*;
  * */
 
 public class GameBoard {
+	int seconds;
+    private TimerObserver timerObserver;
     private static final int SIZE = 9;
     private static final HashMap<Difficulty, Integer> DIFFICULTY_ATTEMPTS = new HashMap<>() {{
         put(Difficulty.EASY, 5);
@@ -32,8 +35,10 @@ public class GameBoard {
     private final GameBoardCell[][] board;
     private final Difficulty difficulty;
     private int hints;
+    
 
     public GameBoard(Difficulty difficulty) {
+    	this.seconds = 0;
         board = new GameBoardCell[SIZE][SIZE];
         this.difficulty = difficulty;
         for (int i = 0; i < SIZE; i++) {
@@ -245,4 +250,27 @@ public class GameBoard {
         }
         return true;
     }
+
+    public void incrementTimer() {
+    	this.seconds++;
+    	notifyTimer();
+    }
+
+	private void notifyTimer() {
+		this.timerObserver.newTime(seconds);
+	}
+
+	public void registerTimer(TimerObserver observer) {
+		this.timerObserver = observer;
+	}
+
+	public int getSeconds() {
+		// TODO Auto-generated method stub
+		return seconds;
+	}
+
+	public void incSecs() {
+		seconds++;
+		
+	}
 }

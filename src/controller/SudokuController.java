@@ -3,22 +3,29 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Timer;
+
 import model.*;
 import view.*;
 
 public class SudokuController implements ActionListener {
     private final SudokuModel model;
+    private Timer timer;
 
     public SudokuController(Difficulty difficulty) {
         this.model = new SudokuModel(difficulty);
+        initializeTimer();
     }
 
     public SudokuController() {
         this.model = new SudokuModel();
+        initializeTimer();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	
+    	
         String command = e.getActionCommand();
         if (command.equals("empty")) {
             model.choseNumber(Numbers.Empty);
@@ -72,7 +79,8 @@ public class SudokuController implements ActionListener {
             cellClick(row, col);
         }
     }
-
+    
+    
     public void addBtnObserver(BtnObserver btnObserver, int row, int col) {
         this.model.registerNumberObserver(btnObserver, row, col);
     }
@@ -97,4 +105,28 @@ public class SudokuController implements ActionListener {
     private void cellClick(int row, int col) {
         model.updateCell(row, col);
     }
+
+	public void addTimerObserver(TimerLabel timerLabel) {
+		model.registerTimer(timerLabel);
+		
+	}
+	
+    private void initializeTimer() {
+    	
+    	// code from https://docs.oracle.com/javase/8/docs/api/javax/swing/Timer.html
+    	// makes the timer increment every second
+        int delay = 1000;
+        ActionListener taskPerformer = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                model.incrementTimer();
+            }
+        };
+        timer = new Timer(delay, taskPerformer);
+        timer.start();
+    }	
+	
+    public int getInitialSeconds() {
+        return model.getInitSeconds();
+    }
+    
 }
