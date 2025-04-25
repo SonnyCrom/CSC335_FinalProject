@@ -9,6 +9,10 @@ public class StartModel {
         db = new DbConnector();
     }
 
+    public StartModel(String file_path){
+        db = new DbConnector();
+    }
+
     public void setLoadSaveEnable(JButton btn) {
         btn.setEnabled(db.isSaveExist());
     }

@@ -18,13 +18,17 @@ public class SudokuModel {
     private boolean isChoosingHint;
 
     public SudokuModel(Difficulty difficulty) {
-        setUpModel();
+        this.numberObservers = new HashMap<>();
+        this.db = new DbConnector();
+        this.selectedNumber = Numbers.Empty;
         this.board = new GameBoard(difficulty);
         this.db.saveNewGameSave(this.board);
     }
 
     public SudokuModel() {
-        setUpModel();
+        this.numberObservers = new HashMap<>();
+        this.db = new DbConnector();
+        this.selectedNumber = Numbers.Empty;
         try {
             this.board = db.getSaveGame();
         } catch (IOException e) {
@@ -32,11 +36,25 @@ public class SudokuModel {
         }
     }
 
-    private void setUpModel() {
+    public SudokuModel(Difficulty difficulty, String filePath) {
         this.numberObservers = new HashMap<>();
-        this.db = new DbConnector();
+        this.db = new DbConnector(filePath);
         this.selectedNumber = Numbers.Empty;
+        this.board = new GameBoard(difficulty);
+        this.db.saveNewGameSave(this.board);
     }
+
+    public SudokuModel(String filePath) {
+        this.numberObservers = new HashMap<>();
+        this.db = new DbConnector(filePath);
+        this.selectedNumber = Numbers.Empty;
+        try {
+            this.board = db.getSaveGame();
+        } catch (IOException e) {
+            System.err.println("Error: Could not load saved game");
+        }
+    }
+
 
     public void loadBoard() {
         for (int row : this.numberObservers.keySet()) {
