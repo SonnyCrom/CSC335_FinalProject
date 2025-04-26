@@ -57,7 +57,6 @@ public class SudokuModel {
         }
     }
 
-
     public void loadBoard() {
         for (int row : this.numberObservers.keySet()) {
             for (int col : this.numberObservers.get(row).keySet()) {
@@ -107,6 +106,7 @@ public class SudokuModel {
     public void updateCell(int row, int col) {
         if (!isChoosingHint) {
             boolean fillResult = this.board.fillPlace(selectedNumber, row, col);
+            // update the button if the user input of the cell is correct
             if (fillResult) {
                 numberObservers.get(row).get(col).setText(selectedNumber.toInteger());
                 msgObserver.newNumber(selectedNumber.toInteger());
@@ -121,6 +121,7 @@ public class SudokuModel {
             db.updateGameSave(board);
             updateHintsBtn();
             handleIfGameOver();
+            // If we used the last hint then we need to change the selection
             if (board.getHints() <= 0) {
                 isChoosingHint = false;
                 selectedNumber = Numbers.Empty;

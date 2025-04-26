@@ -27,6 +27,8 @@ public class DbConnector {
     }
 
     public void updateGameSave(GameBoard gameBoard) {
+        // This does the same as saveNewGameSave, but we have both function because the user doesn't
+        // need to know the behaviour of save and update are the same
         db.saveGame(gameBoard);
     }
 

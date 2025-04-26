@@ -71,9 +71,11 @@ public class GameBoard {
     }
 
     public boolean fillPlace(Numbers n, int row, int col) {
+        // if we are trying to fill the same value and it is the correct one, fillPlace is obviously true
         if (board[row][col].getVal().equals(n) && board[row][col].getCorrectVal().equals(n)) {
             return true;
         }
+        // perform the fill cell only if the cell can be changed and whatever the input is valid or if it is empty
         if (board[row][col].canChange() &&
                 (n == Numbers.Empty || isValidPlacement(n, row, col))) {
             GameBoard c = this.copy();
@@ -95,6 +97,8 @@ public class GameBoard {
         return gson.fromJson(gson.toJson(this), getClass());
     }
 
+    // from the completely filled board, we will remove random cells while checking that the board still only
+    // have one possible solution
     private void setBoardForPlay() {
         int attempts = DIFFICULTY_ATTEMPTS.get(this.difficulty);
         Random rnd = new Random();
@@ -119,6 +123,7 @@ public class GameBoard {
     }
 
     private void lockNumbersAfterInit() {
+        // after we removed some cells in the board, mark the cells with a value as unchangeable
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 board[i][j].setCanChange(board[i][j].getVal().equals(Numbers.Empty));
@@ -151,6 +156,10 @@ public class GameBoard {
     private boolean fillBoard() {
         List<int[]> cells = getAllCells();
 
+        // going cell by cell we will try to add a number to it if the cell empty. We check the value is
+        // valid and then see if we can fill the rest of the board if this cell ahs the current value.
+        // If we failed we will try another value. If no value is possible we will mark it as empty and
+        // back track to the previous cell to change its value.
         for (int[] cell : cells) {
             if (this.board[cell[0]][cell[1]].getVal().equals(Numbers.Empty)) {
                 List<Numbers> numsList = Arrays.asList(Numbers.values());
@@ -240,13 +249,7 @@ public class GameBoard {
     }
 
     public boolean gameOver() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (board[i][j].getVal().equals(Numbers.Empty))
-                    return false;
-            }
-        }
-        return true;
+        return isBoardFull();
     }
 
     public int getSeconds() {

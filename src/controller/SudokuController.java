@@ -24,8 +24,8 @@ public class SudokuController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	
-    	
+
+
         String command = e.getActionCommand();
         if (command.equals("empty")) {
             model.choseNumber(Numbers.Empty);
@@ -79,8 +79,8 @@ public class SudokuController implements ActionListener {
             cellClick(row, col);
         }
     }
-    
-    
+
+
     public void addBtnObserver(BtnObserver btnObserver, int row, int col) {
         this.model.registerNumberObserver(btnObserver, row, col);
     }
@@ -106,15 +106,15 @@ public class SudokuController implements ActionListener {
         model.updateCell(row, col);
     }
 
-	public void addTimerObserver(TimerLabel timerLabel) {
-		model.registerTimer(timerLabel);
-		
-	}
-	
+    public void addTimerObserver(TimerLabel timerLabel) {
+        model.registerTimer(timerLabel);
+
+    }
+
     private void initializeTimer() {
-    	
-    	// code from https://docs.oracle.com/javase/8/docs/api/javax/swing/Timer.html
-    	// makes the timer increment every second
+
+        // code from https://docs.oracle.com/javase/8/docs/api/javax/swing/Timer.html
+        // makes the timer increment every second
         int delay = 1000;
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -123,10 +123,10 @@ public class SudokuController implements ActionListener {
         };
         timer = new Timer(delay, taskPerformer);
         timer.start();
-    }	
-	
+    }
+
     public int getInitialSeconds() {
         return model.getInitSeconds();
     }
-    
+
 }
