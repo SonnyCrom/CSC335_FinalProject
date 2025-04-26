@@ -1,12 +1,15 @@
 # CSC335_FinalProject
 CSC 335 - Final Project
-
+### Authors:
+- Eilon Weiner
+- Sonny Crom
+- Calvin Briscoe
 
 All you need to do is Run Main branch as a java application. You can delete the .json file to simulate no save.
 
 --Design--
 
-The design uses the standard MVC to run the UI.
+The design uses the standard MVC with observers to run the UI.
 
 --MODEL--
 DbConnector - uses googles Gson file, which is found in the libraries folder, to make a json object of the board state when saveNewGameSave is called. Uses a final string for the path because the path will not change, so it shouldn't be able to be reassigned.
