@@ -42,7 +42,7 @@ public class DbConnectorTests {
     @AfterEach
     void afterEach() {
         if (dbFile.exists()) {
-            Assertions.assertTrue(dbFile.delete());
+            assertTrue(dbFile.delete());
         }
         if (testDir.exists()) {
             assertTrue(testDir.delete());
