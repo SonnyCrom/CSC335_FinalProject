@@ -2,7 +2,6 @@ package model;
 
 import view.EndGameObserver;
 import view.MsgObserver;
-import view.TimerLabel;
 import view.TimerObserver;
 import view.BtnObserver;
 
@@ -12,8 +11,8 @@ import java.util.HashMap;
 public class SudokuModel {
     private GameBoard board;
     private Numbers selectedNumber;
-    private DbConnector db;
-    private HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
+    private final DbConnector db;
+    private final HashMap<Integer, HashMap<Integer, BtnObserver>> numberObservers;
     private MsgObserver msgObserver;
     private BtnObserver hintObserver;
     private EndGameObserver endGameObserver;
@@ -57,7 +56,6 @@ public class SudokuModel {
             System.err.println("Error: Could not load saved game");
         }
     }
-
 
     public void loadBoard() {
         for (int row : this.numberObservers.keySet()) {
@@ -108,6 +106,7 @@ public class SudokuModel {
     public void updateCell(int row, int col) {
         if (!isChoosingHint) {
             boolean fillResult = this.board.fillPlace(selectedNumber, row, col);
+            // update the button if the user input of the cell is correct
             if (fillResult) {
                 numberObservers.get(row).get(col).setText(selectedNumber.toInteger());
                 msgObserver.newNumber(selectedNumber.toInteger());
@@ -122,6 +121,7 @@ public class SudokuModel {
             db.updateGameSave(board);
             updateHintsBtn();
             handleIfGameOver();
+            // If we used the last hint then we need to change the selection
             if (board.getHints() <= 0) {
                 isChoosingHint = false;
                 selectedNumber = Numbers.Empty;
@@ -141,25 +141,25 @@ public class SudokuModel {
             endGameObserver.handleEndGame();
         }
     }
-    
+
     public void incrementTimer() {
-    	if(!board.gameOver()) {
-        	this.board.incSecs();
-        	db.updateGameSave(board);
-        	notifyTimer();
-    	}
+        if (!board.gameOver()) {
+            this.board.incSecs();
+            db.updateGameSave(board);
+            notifyTimer();
+        }
     }
 
-	private void notifyTimer() {
-		this.timerObserver.newTime(this.board.getSeconds());
-	}
+    private void notifyTimer() {
+        this.timerObserver.newTime(this.board.getSeconds());
+    }
 
-	public void registerTimer(TimerObserver observer) {
-		this.timerObserver = observer;
-	}
-	
-	public int getInitSeconds() {
-		return board.getSeconds();
-	}
-	
+    public void registerTimer(TimerObserver observer) {
+        this.timerObserver = observer;
+    }
+
+    public int getInitSeconds() {
+        return board.getSeconds();
+    }
+
 }
